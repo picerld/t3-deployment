@@ -19,36 +19,36 @@ export const LoginFormOuter = () => {
     },
   });
 
-  const { mutate: loginUser, isPending: loginIsPending } =
-    trpc.auth.login.useMutation({
-      onSuccess: async () => {
-        toast.success("Berhasil Login", {
-          description: "Selamat datang!!",
-        });
+  // const { mutate: loginUser, isPending: loginIsPending } =
+  //   trpc.auth.login.useMutation({
+  //     onSuccess: async () => {
+  //       toast.success("Berhasil Login", {
+  //         description: "Selamat datang!!",
+  //       });
 
-        await utils.auth.authMe.invalidate();
+  //       await utils.auth.authMe.invalidate();
 
-        form.reset();
+  //       form.reset();
 
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 800);
-      },
-      onError: () => {
-        toast.error("Gagal Login", {
-          description:
-            "Username atau password anda salah, coba periksa kembali",
-        });
-      },
-    });
+  //       setTimeout(() => {
+  //         router.push("/dashboard");
+  //       }, 800);
+  //     },
+  //     onError: () => {
+  //       toast.error("Gagal Login", {
+  //         description:
+  //           "Username atau password anda salah, coba periksa kembali",
+  //       });
+  //     },
+  //   });
 
   const handleLogin = (values: LoginFormSchema) => {
-    loginUser(values);
+    // loginUser(values);
   };
 
   return (
     <Form {...form}>
-      <LoginFormInner onLoginSubmit={handleLogin} isPending={loginIsPending} />
+      <LoginFormInner onLoginSubmit={handleLogin} isPending={false} />
     </Form>
   );
 };
