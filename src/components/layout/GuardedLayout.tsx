@@ -35,22 +35,22 @@ export default function GuardedLayout({
     ["Barang", "Dashboard"].includes(item.name)
   );
 
-  // const logoutMutation = trpc.auth.logout.useMutation({
-  //   onSuccess() {
-  //     toast.success("Berhasil Logout!", {
-  //       description: "Silahkan login kembali!",
-  //     });
-  //     router.push("/login");
-  //   },
-  //   onError() {
-  //     toast.error("Gagal Logout!", {
-  //       description: "Silahkan coba lagi!",
-  //     });
-  //   },
-  // });
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess() {
+      toast.success("Berhasil Logout!", {
+        description: "Silahkan login kembali!",
+      });
+      router.push("/login");
+    },
+    onError() {
+      toast.error("Gagal Logout!", {
+        description: "Silahkan coba lagi!",
+      });
+    },
+  });
 
   function handleLogout() {
-    // logoutMutation.mutate();
+    logoutMutation.mutate();
   }
 
   return (

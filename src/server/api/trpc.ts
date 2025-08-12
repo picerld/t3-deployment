@@ -44,8 +44,24 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+export const createTRPCContext = async ({ req, res }: CreateNextContextOptions) => {
+  // Read token from cookies
+  const token = req.cookies?.["auth.token"];
+  let user = null;
+
+  // Optionally fetch user by token from DB
+  if (token) {
+    user = await db.user.findFirst({
+      where: { token, tokenExpiresAt: { gt: new Date() } },
+    });
+  }
+
+  return {
+    req,
+    res,
+    user,
+    db,
+  };
 };
 
 /**

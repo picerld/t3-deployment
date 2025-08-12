@@ -6,9 +6,9 @@ import { ModeToggle } from "../ui/mode-toggle";
 import { trpc } from "@/utils/trpc";
 
 export default function GuestNavbar() {
-  // const { data: user, isLoading } = trpc.auth.authMe.useQuery(undefined, {
-  //   retry: false,
-  // });
+  const { data: user, isLoading } = trpc.auth.authMe.useQuery(undefined, {
+    retry: false,
+  });
 
   return (
     <header className="w-full fixed bg-background dark:bg-secondary-background shadow-shadow py-5 px-10">
@@ -20,7 +20,7 @@ export default function GuestNavbar() {
         </nav>
         <div className="flex justify-end gap-3">
           <ModeToggle />
-          {/* {!isLoading &&
+          {!isLoading &&
             (user ? (
               <Link
                 href={"/dashboard"}
@@ -31,7 +31,7 @@ export default function GuestNavbar() {
               >
                 Dashboard
               </Link>
-            ) : ( */}
+            ) : (
               <Link
                 href={"/login"}
                 className={buttonVariants({
@@ -41,7 +41,7 @@ export default function GuestNavbar() {
               >
                 Masuk
               </Link>
-            {/* ))} */}
+            ))}
         </div>
       </div>
     </header>
