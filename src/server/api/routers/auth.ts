@@ -9,7 +9,6 @@ export const authRouter = createTRPCRouter({
   authMe: publicProcedure
     .input(z.object({ token: z.string() }))
     .query(async ({ input, ctx }) => {
-      // Find user by token passed explicitly
       const user = await ctx.db.user.findFirst({
         where: { token: input.token, tokenExpiresAt: { gt: new Date() } },
       });

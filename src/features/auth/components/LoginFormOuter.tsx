@@ -6,6 +6,7 @@ import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
 import { LoginFormInner } from "./LoginFormInner";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export const LoginFormOuter = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ export const LoginFormOuter = () => {
 
   const { mutate: loginUser, isPending: loginIsPending } =
     trpc.auth.login.useMutation({
-      onSuccess: async () => {
+      onSuccess: async (data) => {
         toast.success("Berhasil Login", {
           description: "Selamat datang!!",
         });
@@ -29,6 +30,13 @@ export const LoginFormOuter = () => {
         await utils.auth.authMe.invalidate();
 
         form.reset();
+
+        Cookies.set("auth.token", data.token, {
+          expires: 7,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          path: "/",
+        });
 
         setTimeout(() => {
           router.push("/dashboard");

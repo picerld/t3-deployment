@@ -43,9 +43,11 @@ export default function GuardedLayout({
       toast.success("Berhasil Logout!", {
         description: "Silahkan login kembali!",
       });
+
       router.push("/login");
     },
-    onError() {
+    onError(error) {
+      console.log(error);
       toast.error("Gagal Logout!", {
         description: "Silahkan coba lagi!",
       });
@@ -57,6 +59,9 @@ export default function GuardedLayout({
       toast.error("Tidak ada token, gagal logout");
       return;
     }
+
+    Cookies.remove("auth.token");
+
     logoutMutation.mutate({ token });
   }
 
@@ -88,8 +93,9 @@ export default function GuardedLayout({
                 onClick={handleLogout}
                 variant={"neutral"}
                 className="px-5"
+                disabled={logoutMutation.isPending}
               >
-                Logout
+                {logoutMutation.isPending ? "Logging out..." : "Logout"}
               </Button>
             </div>
           </div>

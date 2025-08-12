@@ -6,14 +6,23 @@ import { ModeToggle } from "../ui/mode-toggle";
 import { trpc } from "@/utils/trpc";
 import Cookies from "js-cookie";
 import { skipToken } from "@tanstack/react-query";
+import React from "react";
 
 export default function GuestNavbar() {
   const token = Cookies.get("auth.token");
+
+  const [mounted, setMounted] = React.useState(false);
 
   const { data: user, isLoading } = trpc.auth.authMe.useQuery(
     token ? { token } : skipToken,
     { retry: false },
   );
+
+  React.useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <header className="bg-background dark:bg-secondary-background shadow-shadow fixed w-full px-10 py-5">
