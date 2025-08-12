@@ -42,13 +42,13 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
   return (
     <form onSubmit={form.handleSubmit(onItemSubmit)}>
       <div className="space-y-6 pt-5">
-        <div className="grid sm:grid-cols-2 grid-cols-1 gap-10">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">Nama Barang</FormLabel>
+                <FormLabel className="flex font-bold">Nama Barang</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -61,7 +61,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             name="merk"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">Merk</FormLabel>
+                <FormLabel className="flex font-bold">Merk</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -70,13 +70,13 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             )}
           />
         </div>
-        <div className="grid sm:grid-cols-2 grid-cols-1 gap-10">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="categoryId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">
+                <FormLabel className="flex font-bold">
                   Kategori Barang
                 </FormLabel>
                 <FormControl>
@@ -112,7 +112,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             name="color"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">Warna Barang</FormLabel>
+                <FormLabel className="flex font-bold">Warna Barang</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -126,7 +126,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
           name="condition"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold flex">Kondisi Barang</FormLabel>
+              <FormLabel className="flex font-bold">Kondisi Barang</FormLabel>
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
@@ -152,21 +152,25 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             </FormItem>
           )}
         />
-        <div className="grid sm:grid-cols-2 grid-cols-1 gap-10">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="quantity"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">Kuantiti</FormLabel>
+                <FormLabel className="flex font-bold">Kuantiti</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     value={field.value}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d*$/.test(value)) {
+                        field.onChange(Number(value));
+                      }
+                    }}
                     disabled={isPending}
-                    type="number"
-                    min={0}
+                    type="text"
                   />
                 </FormControl>
                 <FormDescription>Ketikan angka!</FormDescription>
@@ -179,7 +183,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             name="serialNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">Serial Number</FormLabel>
+                <FormLabel className="flex font-bold">Serial Number</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -191,13 +195,13 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             )}
           />
         </div>
-        <div className="grid sm:grid-cols-2 grid-cols-1 gap-10">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="ownerType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">
+                <FormLabel className="flex font-bold">
                   Jenis Kepemilikan
                 </FormLabel>
                 <FormControl>
@@ -227,7 +231,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             name="locationId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold flex">Ruangan</FormLabel>
+                <FormLabel className="flex font-bold">Ruangan</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger>
@@ -259,7 +263,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
           name="userId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold flex">Penanggung Jawab</FormLabel>
+              <FormLabel className="flex font-bold">Penanggung Jawab</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange}>
                   <SelectTrigger>
@@ -287,7 +291,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
           name="history"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold flex">
+              <FormLabel className="flex font-bold">
                 Histori Penggunaan
               </FormLabel>
               <FormControl>
@@ -300,7 +304,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
         />
       </div>
 
-      <div className="flex gap-3 justify-end mt-5">
+      <div className="mt-5 flex justify-end gap-3">
         <Button
           type="reset"
           disabled={isPending}

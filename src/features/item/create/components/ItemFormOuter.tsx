@@ -5,8 +5,11 @@ import { itemFormSchema, type ItemFormSchema } from "../forms/item";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ItemFormInner } from "./ItemFormInner";
+import { useRouter } from "next/navigation";
 
 export const ItemFormOuter = () => {
+  const router = useRouter();
+
   const { mutate: createItem, isPending: createItemIsPending } =
     trpc.items.create.useMutation({
       onSuccess: () => {
@@ -15,6 +18,8 @@ export const ItemFormOuter = () => {
         });
 
         form.reset();
+
+        router.push("/items");
       },
       onError: (error) => {
         if (error.data?.code === "UNAUTHORIZED") {
