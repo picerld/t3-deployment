@@ -2,32 +2,32 @@ import { z } from "zod";
 import { passwordSchema, usernameSchema } from "@/schemas/auth";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import cookie from "cookie";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 export const authRouter = createTRPCRouter({
-  authMe: publicProcedure.query(({ ctx }) => {
-    try {
-      if (!ctx.user) {
+  authMe: publicProcedure
+    .input(z.object({ token: z.string() }))
+    .query(async ({ input, ctx }) => {
+      // Find user by token passed explicitly
+      const user = await ctx.db.user.findFirst({
+        where: { token: input.token, tokenExpiresAt: { gt: new Date() } },
+      });
+
+      if (!user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
-      return ctx.user;
-    } catch (error) {
-      console.log(error)
-    }
-  }),
+
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    }),
 
   login: publicProcedure
     .input(z.object({ username: usernameSchema, password: passwordSchema }))
     .mutation(async ({ input, ctx }) => {
-      console.log("Login called with", input);
       const { username, password } = input;
 
-      const user = await ctx.db.user.findFirst({
-        where: { username },
-      });
-
-      console.log("user:", user);
+      const user = await ctx.db.user.findFirst({ where: { username } });
 
       if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new TRPCError({
@@ -41,49 +41,27 @@ export const authRouter = createTRPCRouter({
 
       await ctx.db.user.update({
         where: { id: user.id },
-        data: { token: token, tokenExpiresAt: expiresAt },
+        data: { token, tokenExpiresAt: expiresAt },
       });
-      
-      ctx.res.setHeader(
-        "Set-Cookie",
-        cookie.serialize("auth.token", token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          maxAge: 60 * 60 * 24 * 7, // 7 days
-          path: "/",
-        })
-      );
 
       const { password: _, ...userWithoutPassword } = user;
-
-      return {
-        token,
-        user: userWithoutPassword,
-      };
+      return { token, user: userWithoutPassword };
     }),
 
-  logout: publicProcedure.mutation(({ ctx }) => {
-    console.log("user logout:", ctx.db.user);
+  logout: publicProcedure
+    .input(z.object({ token: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      // Clear token in DB for the token provided by client
+      const user = await ctx.db.user.findFirst({ where: { token: input.token } });
+      if (!user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
 
-    if (!ctx.db.user) throw new TRPCError({ code: "UNAUTHORIZED" });
+      await ctx.db.user.update({
+        where: { id: user.id },
+        data: { token: null, tokenExpiresAt: null },
+      });
 
-    ctx.db.user.update({
-      where: { id: ctx.user?.id },
-      data: { token: null, tokenExpiresAt: null },
-    })
-
-    ctx.res.setHeader(
-      "Set-Cookie",
-      cookie.serialize("auth.token", "", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 0,
-        path: "/",
-      })
-    );
-
-    return { success: true };
-  }),
+      return { success: true };
+    }),
 });

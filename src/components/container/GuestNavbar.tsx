@@ -4,16 +4,21 @@ import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { ModeToggle } from "../ui/mode-toggle";
 import { trpc } from "@/utils/trpc";
+import Cookies from "js-cookie";
+import { skipToken } from "@tanstack/react-query";
 
 export default function GuestNavbar() {
-  const { data: user, isLoading } = trpc.auth.authMe.useQuery(undefined, {
-    retry: false,
-  });
+  const token = Cookies.get("auth.token");
+
+  const { data: user, isLoading } = trpc.auth.authMe.useQuery(
+    token ? { token } : skipToken,
+    { retry: false },
+  );
 
   return (
-    <header className="w-full fixed bg-background dark:bg-secondary-background shadow-shadow py-5 px-10">
-      <div className="container sm:px-32 mx-auto flex items-center justify-between">
-        <nav className="flex items-center justify-start w-full gap-6">
+    <header className="bg-background dark:bg-secondary-background shadow-shadow fixed w-full px-10 py-5">
+      <div className="container mx-auto flex items-center justify-between sm:px-32">
+        <nav className="flex w-full items-center justify-start gap-6">
           <Link href={"/"} className="text-foreground text-xl">
             Beranda
           </Link>

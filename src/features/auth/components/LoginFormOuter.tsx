@@ -48,7 +48,7 @@ export const LoginFormOuter = () => {
 
   return (
     <Form {...form}>
-      <LoginFormInner onLoginSubmit={handleLogin} isPending={false} />
+      <LoginFormInner onLoginSubmit={handleLogin} isPending={loginIsPending} />
     </Form>
   );
 };

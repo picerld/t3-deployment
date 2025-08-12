@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 export default function GuardedLayout({
   children,
@@ -13,6 +14,8 @@ export default function GuardedLayout({
 }) {
   const pathName = usePathname();
   const router = useRouter();
+
+  const token = Cookies.get("auth.token");
 
   const navItem = [
     { name: "Dashboard", href: "/dashboard", active: false },
@@ -28,11 +31,11 @@ export default function GuardedLayout({
   }));
 
   const group1 = updatedNavItem.filter((item) =>
-    ["Akun", "Kategori", "Lokasi"].includes(item.name)
+    ["Akun", "Kategori", "Lokasi"].includes(item.name),
   );
 
   const group2 = updatedNavItem.filter((item) =>
-    ["Barang", "Dashboard"].includes(item.name)
+    ["Barang", "Dashboard"].includes(item.name),
   );
 
   const logoutMutation = trpc.auth.logout.useMutation({
@@ -50,19 +53,23 @@ export default function GuardedLayout({
   });
 
   function handleLogout() {
-    logoutMutation.mutate();
+    if (!token) {
+      toast.error("Tidak ada token, gagal logout");
+      return;
+    }
+    logoutMutation.mutate({ token });
   }
 
   return (
     <div className="bg-main dark:bg-secondary-background min-h-screen">
       <div className="flex min-h-screen">
-        <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-secondary-background border-b-4 border-black">
-          <div className="flex items-center justify-between sm:px-16 px-4 h-16">
+        <div className="dark:bg-secondary-background fixed top-0 right-0 left-0 z-50 border-b-4 border-black bg-white">
+          <div className="flex h-16 items-center justify-between px-4 sm:px-16">
             <div className="flex items-center space-x-4">
-              <Button className="sm:hidden flex">
+              <Button className="flex sm:hidden">
                 <Menu className="mr-1 !size-5" strokeWidth={2.5} />
               </Button>
-              <div className="sm:flex hidden items-center space-x-2">
+              <div className="hidden items-center space-x-2 sm:flex">
                 <Link href={"/"}>
                   <h1 className="text-2xl font-bold text-black dark:text-white">
                     Inventory
@@ -72,7 +79,7 @@ export default function GuardedLayout({
               <nav className="flex items-center space-x-6"></nav>
             </div>
             <div className="flex items-center space-x-4">
-              <Button className="px-5 sm:flex hidden">
+              <Button className="hidden px-5 sm:flex">
                 <Search className="mr-1 h-4 w-4" />
                 Search
               </Button>
@@ -88,17 +95,17 @@ export default function GuardedLayout({
           </div>
         </div>
 
-        <div className="fixed sm:block hidden left-0 top-16 w-64 h-full bg-white dark:bg-secondary-background border border-r-4 border-black overflow-y-auto">
+        <div className="dark:bg-secondary-background fixed top-16 left-0 hidden h-full w-64 overflow-y-auto border border-r-4 border-black bg-white sm:block">
           <nav className="text-black dark:text-white">
-            <div className="border-b-4 border-black py-3 font-semibold pl-5 text-lg flex items-center bg-white dark:bg-secondary-background">
+            <div className="dark:bg-secondary-background flex items-center border-b-4 border-black bg-white py-3 pl-5 text-lg font-semibold">
               Menu
             </div>
             {group2.map((item) => (
               <Link key={item.name} href={item.href} className="group">
                 <div
-                  className={`border-b-4 border-black py-4 pl-5 text-lg flex items-center ${
+                  className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
                     item.active
-                      ? "bg-main font-semibold group-hover:bg-main"
+                      ? "bg-main group-hover:bg-main font-semibold"
                       : "group-hover:bg-main/70"
                   }`}
                 >
@@ -107,16 +114,16 @@ export default function GuardedLayout({
               </Link>
             ))}
 
-            <div className="border-b-4 border-black py-3 font-semibold pl-5 text-lg flex items-center bg-background dark:bg-secondary-background">
+            <div className="bg-background dark:bg-secondary-background flex items-center border-b-4 border-black py-3 pl-5 text-lg font-semibold">
               Data Master
             </div>
 
             {group1.map((item) => (
               <Link key={item.name} href={item.href} className="group">
                 <div
-                  className={`border-b-4 border-black py-4 pl-5 text-lg flex items-center ${
+                  className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
                     item.active
-                      ? "bg-main font-semibold group-hover:bg-main"
+                      ? "bg-main group-hover:bg-main font-semibold"
                       : "group-hover:bg-main/70"
                   }`}
                 >
@@ -127,11 +134,11 @@ export default function GuardedLayout({
           </nav>
         </div>
 
-        <div className="flex-1 sm:ml-64 pt-16 bg-secondary-background dark:bg-secondary-background text-black dark:text-white min-h-screen">
-          <div className="w-full sm:px-8 px-5 sm:py-20 py-10 min-h-screen">
+        <div className="bg-secondary-background dark:bg-secondary-background min-h-screen flex-1 pt-16 text-black sm:ml-64 dark:text-white">
+          <div className="min-h-screen w-full px-5 py-10 sm:px-8 sm:py-20">
             {children}
           </div>
-          <footer className="flex min-h-16 border-t-2 border-gray-200 dark:border-gray-700 p-4 mt-10 text-muted-foreground dark:text-muted-foreground-dark">
+          <footer className="text-muted-foreground dark:text-muted-foreground-dark mt-10 flex min-h-16 border-t-2 border-gray-200 p-4 dark:border-gray-700">
             <p className="w-full text-center">
               &copy; {new Date().getFullYear()}. All rights reserved.
             </p>
