@@ -170,7 +170,7 @@ export default function GuardedLayout({
         </div>
 
         <div className="dark:bg-secondary-background fixed top-16 left-0 hidden h-full w-64 overflow-y-auto border border-r-4 border-black bg-white sm:block">
-          <nav className="text-black dark:text-white">
+          <nav className="flex h-full flex-col text-black dark:text-white">
             <div className="dark:bg-secondary-background flex items-center border-b-4 border-black bg-white py-3 pl-5 text-lg font-semibold">
               Menu
             </div>
@@ -205,6 +205,10 @@ export default function GuardedLayout({
                 </div>
               </Link>
             ))}
+
+            <div className="mt-auto mb-20 w-full border-t-4 border-black pt-3 pl-5 text-lg">
+              {user ? user.name : "Unknown"}
+            </div>
           </nav>
         </div>
 
