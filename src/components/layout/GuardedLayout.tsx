@@ -1,11 +1,20 @@
 import { Menu, Search } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { ModeToggle } from "../ui/mode-toggle";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetTrigger,
+} from "../ui/sheet";
+import React from "react";
+import { skipToken } from "@tanstack/react-query";
 
 export default function GuardedLayout({
   children,
@@ -16,6 +25,11 @@ export default function GuardedLayout({
   const router = useRouter();
 
   const token = Cookies.get("auth.token");
+
+  const { data: user, isLoading } = trpc.auth.authMe.useQuery(
+    token ? { token } : skipToken,
+    { retry: false },
+  );
 
   const navItem = [
     { name: "Dashboard", href: "/dashboard", active: false },
@@ -71,9 +85,63 @@ export default function GuardedLayout({
         <div className="dark:bg-secondary-background fixed top-0 right-0 left-0 z-50 border-b-4 border-black bg-white">
           <div className="flex h-16 items-center justify-between px-4 sm:px-16">
             <div className="flex items-center space-x-4">
-              <Button className="flex sm:hidden">
-                <Menu className="mr-1 !size-5" strokeWidth={2.5} />
-              </Button>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button className="flex sm:hidden">
+                    <Menu className="mr-1 !size-5" strokeWidth={2.5} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <nav className="text-black dark:text-white">
+                    <div className="dark:bg-secondary-background flex items-center border-b-4 border-black bg-white py-3 pl-5 text-lg font-semibold">
+                      Menu
+                    </div>
+                    {group2.map((item) => (
+                      <Link key={item.name} href={item.href} className="group">
+                        <div
+                          className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
+                            item.active
+                              ? "bg-main group-hover:bg-main font-semibold"
+                              : "group-hover:bg-main/70"
+                          }`}
+                        >
+                          {item.name}
+                        </div>
+                      </Link>
+                    ))}
+
+                    <div className="bg-background dark:bg-secondary-background flex items-center border-b-4 border-black py-3 pl-5 text-lg font-semibold">
+                      Data Master
+                    </div>
+
+                    {group1.map((item) => (
+                      <Link key={item.name} href={item.href} className="group">
+                        <div
+                          className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
+                            item.active
+                              ? "bg-main group-hover:bg-main font-semibold"
+                              : "group-hover:bg-main/70"
+                          }`}
+                        >
+                          {item.name}
+                        </div>
+                      </Link>
+                    ))}
+                  </nav>
+                  <SheetFooter>
+                    <Button
+                      variant={"neutral"}
+                      onClick={handleLogout}
+                      disabled={logoutMutation.isPending}
+                    >
+                      Logout
+                    </Button>
+                    <div className={buttonVariants({ variant: "default" })}>
+                      {user ? user.name : "Unknown"}
+                    </div>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
               <div className="hidden items-center space-x-2 sm:flex">
                 <Link href={"/"}>
                   <h1 className="text-2xl font-bold text-black dark:text-white">

@@ -23,7 +23,10 @@ export function CategoryDatatable() {
 
   const { data, isLoading } = trpc.categories.getPaginated.useQuery(
     { page, perPage, search: debouncedSearch },
-    { refetchOnWindowFocus: true }
+    {
+      refetchOnWindowFocus: false,
+      placeholderData: (previousData) => previousData,
+    },
   );
 
   if (isLoading) {
@@ -64,7 +67,7 @@ export function CategoryDatatable() {
   };
 
   return (
-    <div className="overflow-x-auto py-10 w-full">
+    <div className="overflow-x-auto py-10 sm:w-full w-sm">
       <DataTable
         search={search}
         columns={columns}

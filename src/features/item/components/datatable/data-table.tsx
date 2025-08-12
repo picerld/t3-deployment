@@ -100,12 +100,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="flex items-center justify-between pb-5">
+      <div className="flex items-center sm:flex-row flex-col gap-4 justify-between pb-5">
         <Input
           placeholder="Cari barang kamu..."
           value={search}
           onChange={handleSearch}
-          className="max-w-xs"
+          className="sm:max-w-xs w-full"
         />
         <div className="flex gap-2 justify-end">
           <Select value={condition} onValueChange={handleConditionChange}>

@@ -29,8 +29,6 @@ export const LoginFormOuter = () => {
 
         await utils.auth.authMe.invalidate();
 
-        form.reset();
-
         Cookies.set("auth.token", data.token, {
           expires: 7,
           secure: process.env.NODE_ENV === "production",
@@ -41,6 +39,8 @@ export const LoginFormOuter = () => {
         setTimeout(() => {
           router.push("/dashboard");
         }, 800);
+        
+        form.reset();
       },
       onError: () => {
         toast.error("Gagal Login", {

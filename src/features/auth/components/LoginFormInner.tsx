@@ -34,9 +34,9 @@ export const LoginFormInner: React.FC<LoginFormInnerProps> = ({
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold flex">Username</FormLabel>
+              <FormLabel className="flex font-bold">Username</FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input disabled={isPending} type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -49,10 +49,11 @@ export const LoginFormInner: React.FC<LoginFormInnerProps> = ({
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel className="font-bold flex">Password</FormLabel>
+                <FormLabel className="flex font-bold">Password</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
+                      disabled={isPending}
                       type={showPassword ? "text" : "password"}
                       {...field}
                       className="pr-10"
@@ -60,13 +61,13 @@ export const LoginFormInner: React.FC<LoginFormInnerProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-5 flex items-center text-gray-800 cursor-pointer"
+                      className="absolute inset-y-0 right-5 flex cursor-pointer items-center text-gray-800"
                       tabIndex={-1}
                     >
                       {showPassword ? (
-                        <EyeOff className="w-5 h-5" />
+                        <EyeOff className="h-5 w-5" />
                       ) : (
-                        <Eye className="w-5 h-5" />
+                        <Eye className="h-5 w-5" />
                       )}
                     </button>
                   </div>
@@ -84,7 +85,11 @@ export const LoginFormInner: React.FC<LoginFormInnerProps> = ({
         </div>
 
         <div className="w-full">
-          <Button type="submit" className="w-full py-6 text-base" disabled={isPending}>
+          <Button
+            type="submit"
+            className="w-full py-6 text-base"
+            disabled={isPending}
+          >
             {isPending ? "Login..." : "Masuk Sekarang!"}
           </Button>
         </div>

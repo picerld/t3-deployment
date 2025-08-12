@@ -50,7 +50,7 @@ export const columns: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       return (
         <div className="text-justify text-pretty">
-          {row.original.description}
+          {row.original.description ?? "-"}
         </div>
       );
     },
