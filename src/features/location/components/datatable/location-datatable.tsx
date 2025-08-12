@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DataTablePagination } from "@/components/datatable/data-table-pagination";
 import useDebounce from "@/hooks/use-debounce";
-import { Location } from "@/types/location";
+import { type Location } from "@/types/location";
 
 export function LocationDatatable() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export function LocationDatatable() {
 
   const page = Number(searchParams.get("page")) || 1;
   const perPage = Number(searchParams.get("perPage")) || 5;
-  const searchFromUrl = searchParams.get("search") || "";
+  const searchFromUrl = searchParams.get("search") ?? "";
 
   const [search, setSearch] = useState(searchFromUrl);
   const debouncedSearch = useDebounce(search, 1000);

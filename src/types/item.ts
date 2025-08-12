@@ -1,6 +1,6 @@
-import { Category } from "./category";
-import { Location } from "./location";
-import { User } from "./user";
+import { type Category } from "./category";
+import { type Location } from "./location";
+import { type User } from "./user";
 
 export type Item = {
     id: string;

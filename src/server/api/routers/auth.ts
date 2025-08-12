@@ -8,7 +8,6 @@ import bcrypt from 'bcrypt';
 export const authRouter = createTRPCRouter({
   authMe: publicProcedure.query(({ ctx }) => {
     try {
-      console.log("user:", ctx.user);
       if (!ctx.user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }

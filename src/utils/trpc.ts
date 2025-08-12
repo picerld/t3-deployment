@@ -1,4 +1,4 @@
-import { AppRouter } from '@/server/api/root';
+import { type AppRouter } from '@/server/api/root';
 import { createTRPCReact, TRPCClientError } from '@trpc/react-query';
 import { toast } from 'sonner';
 

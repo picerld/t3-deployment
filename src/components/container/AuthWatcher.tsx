@@ -12,7 +12,8 @@ export function AuthWatcher() {
 
   useEffect(() => {
     if (meQuery.error?.data?.code === "UNAUTHORIZED") {
-      router.push("/login");
+      // router.push("/login");
+      return;
     }
   }, [meQuery.error, router]);
 

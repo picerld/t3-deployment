@@ -1,7 +1,7 @@
 import { Form } from "@/components/ui/form";
 import { trpc } from "@/utils/trpc";
 import { useForm } from "react-hook-form";
-import { itemFormSchema, ItemFormSchema } from "../forms/item";
+import { itemFormSchema, type ItemFormSchema } from "../forms/item";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ItemFormInner } from "./ItemFormInner";
@@ -30,7 +30,6 @@ export const ItemFormOuter = () => {
     });
 
   const form = useForm<ItemFormSchema>({
-    // @ts-expect-error resolver
     resolver: zodResolver(itemFormSchema),
     defaultValues: {
       name: "",

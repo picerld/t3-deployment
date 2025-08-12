@@ -1,6 +1,6 @@
 "use client";
 
-import { Category } from "@/types/category";
+import { type Category } from "@/types/category";
 import { columns } from "./column";
 import { DataTable } from "./data-table";
 import { trpc } from "@/utils/trpc";
@@ -16,7 +16,7 @@ export function CategoryDatatable() {
 
   const page = Number(searchParams.get("page")) || 1;
   const perPage = Number(searchParams.get("perPage")) || 5;
-  const searchFromUrl = searchParams.get("search") || "";
+  const searchFromUrl = searchParams.get("search") ?? "";
 
   const [search, setSearch] = useState(searchFromUrl);
   const debouncedSearch = useDebounce(search, 1000);

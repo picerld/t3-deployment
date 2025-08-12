@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { LocationFormSchema } from "../forms/location";
+import { type LocationFormSchema } from "../forms/location";
 
 type LocationFormInnerProps = {
   onLocationSubmit: (value: LocationFormSchema) => void;

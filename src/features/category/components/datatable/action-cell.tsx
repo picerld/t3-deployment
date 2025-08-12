@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SquarePen } from "lucide-react";
-import { toast } from "sonner";
-import { Category } from "@/types/category";
+import { type Category } from "@/types/category";
 import { OnDeleteLoadingDialog } from "@/components/dialog/onDeleteConfirmationDialog";
 
 type ActionsCellProps = {

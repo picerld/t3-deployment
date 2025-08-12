@@ -2,9 +2,9 @@
 
 import { DataTableColumnHeader } from "@/components/datatable/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { ActionsCell } from "./action-cell";
-import { Location } from "@/types/location";
+import { type Location } from "@/types/location";
 
 export const columns: ColumnDef<Location>[] = [
   {

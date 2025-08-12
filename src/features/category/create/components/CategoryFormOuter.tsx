@@ -1,6 +1,6 @@
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { CategoryFormSchema, categoryFormSchema } from "../forms/category";
+import { type CategoryFormSchema, categoryFormSchema } from "../forms/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";

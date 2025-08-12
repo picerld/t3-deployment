@@ -5,7 +5,7 @@ import { DataTable } from "./data-table";
 import { DataTablePagination } from "@/components/datatable/data-table-pagination";
 import { trpc } from "@/utils/trpc";
 import useDebounce from "@/hooks/use-debounce";
-import { Item } from "@/types/item";
+import { type Item } from "@/types/item";
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -24,10 +24,10 @@ export function ItemDatatable() {
   useEffect(() => {
     setPage(Number(searchParams.get("page")) || 1);
     setPerPage(Number(searchParams.get("perPage")) || 5);
-    setSearch(searchParams.get("search") || "");
-    setCategory(searchParams.get("category") || "");
-    setOwner(searchParams.get("owner") || "");
-    setCondition(searchParams.get("condition") || "");
+    setSearch(searchParams.get("search") ?? "");
+    setCategory(searchParams.get("category") ?? "");
+    setOwner(searchParams.get("owner") ?? "");
+    setCondition(searchParams.get("condition") ?? "");
   }, [searchParams]);
 
   const debouncedSearch = useDebounce(search, 800);

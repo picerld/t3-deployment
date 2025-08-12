@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import { toast } from "sonner";
 import { OnDeleteLoadingDialog } from "@/components/dialog/onDeleteConfirmationDialog";
-import { Item } from "@/types/item";
+import { type Item } from "@/types/item";
 
 type ActionsCellProps = {
   item: Item;

@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { LoginFormSchema } from "../forms/login";
+import { type LoginFormSchema } from "../forms/login";
 import {
   FormControl,
   FormField,

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SquarePen } from "lucide-react";
 import { toast } from "sonner";
 import { OnDeleteLoadingDialog } from "@/components/dialog/onDeleteConfirmationDialog";
-import { Location } from "@/types/location";
+import { type Location } from "@/types/location";
 
 type ActionsCellProps = {
   location: Location;

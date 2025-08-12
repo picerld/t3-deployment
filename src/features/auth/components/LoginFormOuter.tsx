@@ -1,7 +1,7 @@
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginFormSchema, LoginFormSchema } from "../forms/login";
+import { loginFormSchema, type LoginFormSchema } from "../forms/login";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
 import { LoginFormInner } from "./LoginFormInner";

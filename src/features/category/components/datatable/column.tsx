@@ -2,8 +2,8 @@
 
 import { DataTableColumnHeader } from "@/components/datatable/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Category } from "@/types/category";
-import { ColumnDef } from "@tanstack/react-table";
+import { type Category } from "@/types/category";
+import { type ColumnDef } from "@tanstack/react-table";
 import { ActionsCell } from "./action-cell";
 
 export const columns: ColumnDef<Category>[] = [

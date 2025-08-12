@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { UserFormSchema } from "../forms/user";
+import { type UserFormSchema } from "../forms/user";
 import {
   FormControl,
   FormField,

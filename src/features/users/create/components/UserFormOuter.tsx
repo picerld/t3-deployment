@@ -1,7 +1,7 @@
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userFormSchema, UserFormSchema } from "../forms/user";
+import { userFormSchema, type UserFormSchema } from "../forms/user";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
 import { UserFormInner } from "./UserFormInner";

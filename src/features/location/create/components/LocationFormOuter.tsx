@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
-import { locationFormSchema, LocationFormSchema } from "../forms/location";
+import { locationFormSchema, type LocationFormSchema } from "../forms/location";
 import { LocationFormInner } from "./LocationFormInner";
 
 export const LocationFormOuter = () => {
