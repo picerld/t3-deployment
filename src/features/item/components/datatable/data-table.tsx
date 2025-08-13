@@ -138,7 +138,7 @@ export function DataTable<TData, TValue>({
           </Select>
           <Select value={category} onValueChange={handleCategoryChange}>
             <SelectTrigger>
-              <SelectValue placeholder="Pilih kategori" />
+              <SelectValue placeholder="Kategori" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

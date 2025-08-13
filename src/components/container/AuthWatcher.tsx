@@ -1,22 +1,18 @@
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { skipToken } from "@tanstack/react-query";
 
 export function AuthWatcher() {
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedToken = Cookies.get("auth.token") || null;
-    setToken(storedToken);
-  }, []);
+  const token = Cookies.get("auth.token") || null;
 
   const meQuery = trpc.auth.authMe.useQuery(
     token ? { token } : skipToken,
     {
-      refetchOnWindowFocus: true,
+      enabled: !!token,
+      refetchOnWindowFocus: false,
       retry: false,
     }
   );

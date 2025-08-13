@@ -17,15 +17,25 @@ datasource db {
 model User {
   id             String    @id @default(uuid())
   name           String?
-  username       String
-  password       String
+  username       String?
+  password       String?
   token          String?
   tokenExpiresAt DateTime?
+  teamId         Int?
   roleId         Int
-  role           Role      @relation(fields: [roleId], references: [id])
   Item           Item[]
+  Team           Team?     @relation(fields: [teamId], references: [id])
+  role           Role      @relation(fields: [roleId], references: [id])
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  user      User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Role {

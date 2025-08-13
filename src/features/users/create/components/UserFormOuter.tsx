@@ -33,8 +33,6 @@ export const UserFormOuter = () => {
     resolver: zodResolver(userFormSchema),
     defaultValues: {
       name: "",
-      username: "",
-      password: "",
       roleId: 2,
     },
     disabled: createUserIsPending,

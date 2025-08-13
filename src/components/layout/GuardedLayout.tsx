@@ -29,7 +29,11 @@ export default function GuardedLayout({
 
   const { data: user, isLoading } = trpc.auth.authMe.useQuery(
     token ? { token } : skipToken,
-    { retry: false },
+    {
+      retry: false,
+      enabled: !!token,
+      refetchOnWindowFocus: false,
+    },
   );
 
   const navItem = [

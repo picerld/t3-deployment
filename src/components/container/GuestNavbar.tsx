@@ -15,7 +15,11 @@ export default function GuestNavbar() {
 
   const { data: user, isLoading } = trpc.auth.authMe.useQuery(
     token ? { token } : skipToken,
-    { retry: false },
+    {
+      retry: false,
+      enabled: !!token,
+      refetchOnWindowFocus: false,
+    },
   );
 
   React.useEffect(() => setMounted(true), []);

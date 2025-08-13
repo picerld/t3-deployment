@@ -5,7 +5,7 @@ import { ItemCard } from "./ItemsCard";
 
 export const ItemsCardContainer = () => {
   const { data: items, isLoading } = trpc.items.getPaginated.useQuery({
-    perPage: 5,
+    perPage: 3,
   });
 
   if (isLoading) return <div>Mohon tunggu sebentar ya...</div>;
@@ -16,6 +16,8 @@ export const ItemsCardContainer = () => {
         <ItemCard
           key={item.id}
           title={item.name}
+          merk={item.merk}
+          serialNumber={item.serialNumber}
           total={item.quantity}
           username={item.user.name ?? "Unknown"}
           detailHref={`/items/${item.id}`}
