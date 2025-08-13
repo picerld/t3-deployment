@@ -34,14 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { trpc } from "@/utils/trpc";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
-import {
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { ExportOption } from "./export-option";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,7 +65,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
 
   const [columnVisibility, setColumnVisibility] =
@@ -100,14 +93,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="flex items-center sm:flex-row flex-col gap-4 justify-between pb-5">
+      <div className="flex flex-col items-center justify-between gap-4 pb-5 sm:flex-row">
         <Input
           placeholder="Cari barang kamu..."
           value={search}
           onChange={handleSearch}
-          className="sm:max-w-xs w-full"
+          className="w-full sm:max-w-xs"
         />
-        <div className="flex gap-2 justify-end">
+        <div className="flex justify-end gap-2">
           <Select value={condition} onValueChange={handleConditionChange}>
             <SelectTrigger>
               <SelectValue placeholder="Kondisi" />
@@ -162,16 +155,7 @@ export function DataTable<TData, TValue>({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size={"sm"} variant={"default"}>Export</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Export Data</DropdownMenuLabel>
-              <DropdownMenuItem>PDF</DropdownMenuItem>
-              <DropdownMenuItem>CSV</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ExportOption table={table} />
           <DataTableViewOptions table={table} />
         </div>
       </div>
@@ -187,7 +171,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -204,10 +188,10 @@ export function DataTable<TData, TValue>({
                   className="even:bg-main/10"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className=" py-3" key={cell.id}>
+                    <TableCell className="py-3" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -226,8 +210,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
 
           {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/70 z-10">
-              <Loader className="animate-spin size-6" />
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/70">
+              <Loader className="size-6 animate-spin" />
               <p className="ml-2 text-base font-normal">Loading ...</p>
             </div>
           )}

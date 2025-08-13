@@ -47,6 +47,10 @@ export const userRouter = createTRPCRouter({
     return ctx.db.user.findMany();
   }),
 
+  getCount: publicProcedure.query(({ ctx }) => {
+    return ctx.db.user.count();
+  }),
+
   create: publicProcedure.input(userFormSchema)
     .mutation(async ({ ctx, input }) => {
       const hashedPassword = await bcrypt.hash(input.password, 10);

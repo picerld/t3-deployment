@@ -11,6 +11,7 @@ import {
   SheetClose,
   SheetContent,
   SheetFooter,
+  SheetHeader,
   SheetTrigger,
 } from "../ui/sheet";
 import React from "react";
@@ -83,14 +84,15 @@ export default function GuardedLayout({
     <div className="bg-main dark:bg-secondary-background min-h-screen">
       <div className="flex min-h-screen">
         <div className="dark:bg-secondary-background fixed top-0 right-0 left-0 z-50 border-b-4 border-black bg-white">
-          <div className="flex h-16 items-center justify-between px-4 sm:px-16">
+          <div className="flex h-16 items-center justify-between px-4 md:px-16">
             <div className="flex items-center space-x-4">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button className="flex sm:hidden">
+                  <Button className="flex md:hidden">
                     <Menu className="mr-1 !size-5" strokeWidth={2.5} />
                   </Button>
                 </SheetTrigger>
+                <SheetHeader></SheetHeader>
                 <SheetContent side="left">
                   <nav className="text-black dark:text-white">
                     <div className="dark:bg-secondary-background flex items-center border-b-4 border-black bg-white py-3 pl-5 text-lg font-semibold">
@@ -169,7 +171,7 @@ export default function GuardedLayout({
           </div>
         </div>
 
-        <div className="dark:bg-secondary-background fixed top-16 left-0 hidden h-full w-64 overflow-y-auto border border-r-4 border-black bg-white sm:block">
+        <div className="dark:bg-secondary-background fixed top-16 left-0 hidden h-full w-64 overflow-y-auto border border-r-4 border-black bg-white md:block">
           <nav className="flex h-full flex-col text-black dark:text-white">
             <div className="dark:bg-secondary-background flex items-center border-b-4 border-black bg-white py-3 pl-5 text-lg font-semibold">
               Menu
@@ -212,8 +214,8 @@ export default function GuardedLayout({
           </nav>
         </div>
 
-        <div className="bg-secondary-background dark:bg-secondary-background min-h-screen flex-1 pt-16 text-black sm:ml-64 dark:text-white">
-          <div className="min-h-screen w-full px-5 py-10 sm:px-8 sm:py-20">
+        <div className="bg-secondary-background dark:bg-secondary-background min-h-screen flex-1 pt-16 text-black md:ml-64 dark:text-white">
+          <div className="min-h-screen w-full px-5 py-10 sm:px-8 sm:py-14">
             {children}
           </div>
           <footer className="text-muted-foreground dark:text-muted-foreground-dark mt-10 flex min-h-16 border-t-2 border-gray-200 p-4 dark:border-gray-700">
