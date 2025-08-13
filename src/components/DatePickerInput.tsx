@@ -12,11 +12,13 @@ import React from "react";
 
 type DatePickerInputProps = {
   value?: Date;
+  disabled?: boolean;
   onChange?: (date: Date | undefined) => void;
 };
 
 export const DatePickerInput: React.FC<DatePickerInputProps> = ({
   value,
+  disabled,
   onChange,
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -33,6 +35,7 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
+            disabled={disabled}
             variant="neutral"
             size={"lg"}
             id="date"
@@ -44,6 +47,7 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
         </PopoverTrigger>
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
           <Calendar
+            disabled={disabled}
             mode="single"
             selected={value}
             captionLayout="dropdown"

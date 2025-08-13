@@ -24,6 +24,7 @@ export const authErrorLink: TRPCLink<AppRouter> = () => ({ op, next }) => {
         }
         observer.error(err);
       },
+
       complete() {
         observer.complete();
       },

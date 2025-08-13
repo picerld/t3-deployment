@@ -2,6 +2,7 @@ import { itemCategoryIdSchema, itemColor, itemConditionSchema, itemHistorySchema
 import z from "zod";
 
 export const itemFormSchema = z.object({
+    id: z.string().optional(),
     name: itemNameSchema,
     merk: itemMerkSchema,
     categoryId: itemCategoryIdSchema,
