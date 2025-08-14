@@ -8,6 +8,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DataTablePagination } from "@/components/datatable/data-table-pagination";
 import useDebounce from "@/hooks/use-debounce";
 import { type Location } from "@/types/location";
+import { LocationUpdateFormOuter } from "../../update/LocationUpdateFormOuter";
 
 export function LocationDatatable() {
   const router = useRouter();
@@ -20,6 +21,10 @@ export function LocationDatatable() {
 
   const [search, setSearch] = useState(searchFromUrl);
   const debouncedSearch = useDebounce(search, 1000);
+
+  const [selectedLocation, setselectedLocation] = useState<Location | null>(
+    null,
+  );
 
   const { data, isLoading } = trpc.locations.getPaginated.useQuery(
     { page, perPage, search: debouncedSearch },
@@ -67,10 +72,10 @@ export function LocationDatatable() {
   };
 
   return (
-    <div className="overflow-x-auto py-10 sm:w-full w-sm">
+    <div className="w-sm overflow-x-auto py-10 sm:w-full">
       <DataTable
         search={search}
-        columns={columns}
+        columns={columns(setselectedLocation)}
         data={tableData}
         isLoading={isLoading}
         handleSearch={handleSearchChange}
@@ -84,6 +89,14 @@ export function LocationDatatable() {
         onPageChange={handlePageChange}
         onPerPageChange={handlePerPageChange}
       />
+
+      {selectedLocation && (
+        <LocationUpdateFormOuter
+          locationId={selectedLocation.id}
+          open={!!selectedLocation}
+          onClose={() => setselectedLocation(null)}
+        />
+      )}
     </div>
   );
 }

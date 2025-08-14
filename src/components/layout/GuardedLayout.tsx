@@ -88,7 +88,7 @@ export default function GuardedLayout({
     <div className="bg-main dark:bg-secondary-background min-h-screen">
       <div className="flex min-h-screen">
         <div className="dark:bg-secondary-background fixed top-0 right-0 left-0 z-50 border-b-4 border-black bg-white">
-          <div className="flex h-16 items-center justify-between px-4 md:px-16">
+          <div className="flex h-16 items-center justify-between px-4 md:px-4">
             <div className="flex items-center space-x-4">
               <Sheet>
                 <SheetTrigger asChild>

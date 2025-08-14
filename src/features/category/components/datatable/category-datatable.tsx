@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DataTablePagination } from "@/components/datatable/data-table-pagination";
 import useDebounce from "@/hooks/use-debounce";
+import { CategoryUpdateFormOuter } from "../../update/CategoryUpdateFormOuter";
 
 export function CategoryDatatable() {
   const router = useRouter();
@@ -20,6 +21,10 @@ export function CategoryDatatable() {
 
   const [search, setSearch] = useState(searchFromUrl);
   const debouncedSearch = useDebounce(search, 1000);
+
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
 
   const { data, isLoading } = trpc.categories.getPaginated.useQuery(
     { page, perPage, search: debouncedSearch },
@@ -67,10 +72,10 @@ export function CategoryDatatable() {
   };
 
   return (
-    <div className="overflow-x-auto py-10 sm:w-full w-sm">
+    <div className="w-sm overflow-x-auto py-10 sm:w-full">
       <DataTable
         search={search}
-        columns={columns}
+        columns={columns(setSelectedCategory)}
         data={tableData}
         isLoading={isLoading}
         handleSearch={handleSearchChange}
@@ -84,6 +89,14 @@ export function CategoryDatatable() {
         onPageChange={handlePageChange}
         onPerPageChange={handlePerPageChange}
       />
+
+      {selectedCategory && (
+        <CategoryUpdateFormOuter
+          categoryId={selectedCategory.id}
+          open={!!selectedCategory}
+          onClose={() => setSelectedCategory(null)}
+        />
+      )}
     </div>
   );
 }

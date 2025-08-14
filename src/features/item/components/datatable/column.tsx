@@ -121,12 +121,29 @@ export const columns = (meta: {
     {
       accessorKey: "createdAt",
       header: () => (
-        <div className="text-left font-semibold text-base">Tercatat pada</div>
+        <div className="text-left font-semibold text-base">Tercatat</div>
       ),
       cell: ({ row }) => {
         return (
           <div className="text-justify text-pretty">
             {row.original.createdAt.toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            })}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "updatedAt",
+      header: () => (
+        <div className="text-left font-semibold text-base">Diperbarui</div>
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="text-justify text-pretty">
+            {row.original.updatedAt.toLocaleDateString("id-ID", {
               day: "2-digit",
               month: "long",
               year: "numeric",

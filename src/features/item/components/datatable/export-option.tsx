@@ -40,16 +40,12 @@ export function ExportOption<TData>({
 
   const handleDownloadPDF = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!startDate)
-      return toast.error("Oops", {
-        description: "Silahkan pilih tanggal terlebih dahulu",
-      });
 
     setIsLoading(true);
 
     try {
       const res = await exportPDF.mutateAsync({
-        startDate: startDate.toISOString(),
+        startDate: startDate?.toISOString(),
         endDate: endDate?.toISOString() ?? new Date().toISOString(),
       });
 
@@ -94,16 +90,11 @@ export function ExportOption<TData>({
   const handleDownloadCSV = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!startDate)
-      return toast.error("Oops", {
-        description: "Silahkan pilih tanggal terlebih dahulu",
-      });
-
     setIsLoading(true);
 
     try {
       const csvData = await exportCSV.mutateAsync({
-        startDate: startDate.toISOString(),
+        startDate: startDate?.toISOString(),
         endDate: endDate?.toISOString() ?? new Date().toISOString(),
       });
 
@@ -160,9 +151,17 @@ export function ExportOption<TData>({
                 </DialogHeader>
                 <div className="mt-5 space-y-5">
                   <Label htmlFor="date">Tanggal Awal</Label>
-                  <DatePickerInput disabled={isLoading} value={startDate} onChange={setStartDate} />
+                  <DatePickerInput
+                    disabled={isLoading}
+                    value={startDate}
+                    onChange={setStartDate}
+                  />
                   <Label htmlFor="date">Tanggal Akhir</Label>
-                  <DatePickerInput disabled={isLoading} value={endDate} onChange={setEndDate} />
+                  <DatePickerInput
+                    disabled={isLoading}
+                    value={endDate}
+                    onChange={setEndDate}
+                  />
                 </div>
                 <DialogFooter className="mt-10">
                   <DialogClose asChild>
@@ -216,9 +215,17 @@ export function ExportOption<TData>({
                 </DialogHeader>
                 <div className="mt-5 space-y-5">
                   <Label htmlFor="date">Tanggal Awal</Label>
-                  <DatePickerInput disabled={isLoading} value={startDate} onChange={setStartDate} />
+                  <DatePickerInput
+                    disabled={isLoading}
+                    value={startDate}
+                    onChange={setStartDate}
+                  />
                   <Label htmlFor="date">Tanggal Akhir</Label>
-                  <DatePickerInput disabled={isLoading} value={endDate} onChange={setEndDate} />
+                  <DatePickerInput
+                    disabled={isLoading}
+                    value={endDate}
+                    onChange={setEndDate}
+                  />
                 </div>
                 <DialogFooter className="mt-10">
                   <DialogClose asChild>

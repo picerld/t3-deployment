@@ -6,31 +6,54 @@ import { SquarePen } from "lucide-react";
 import { toast } from "sonner";
 import { OnDeleteLoadingDialog } from "@/components/dialog/onDeleteConfirmationDialog";
 import { type Location } from "@/types/location";
+import { trpc } from "@/utils/trpc";
 
 type ActionsCellProps = {
   location: Location;
+  onEdit: (location: Location) => void;
 };
 
-export const ActionsCell: React.FC<ActionsCellProps> = ({ location }) => {
+export const ActionsCell: React.FC<ActionsCellProps> = ({
+  location,
+  onEdit,
+}) => {
   const [deleteStatus, setDeleteStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
 
-  const handleDeleteCourse = async (locationId: string) => {
-    console.log(locationId);
+  const deleteLocation = trpc.locations.delete.useMutation();
+
+  const handleDeleteCourse = async (locationId: number) => {
+    try {
+      setDeleteStatus("loading");
+
+      await deleteLocation.mutateAsync({ id: locationId });
+
+      setDeleteStatus("success");
+      toast.success("Berhasil!!", {
+        description: "Ruangan berhasil dihapus!",
+      });
+
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (error: any) {
+      toast.error("Oops! Terjadi kesalahan", {
+        description: error.message,
+      });
+      setDeleteStatus("error");
+    } finally {
+      setTimeout(() => setDeleteStatus("idle"), 2000);
+    }
   };
 
   return (
-    <div className="flex gap-3 justify-center">
-      <Button
-        variant={"noShadow"}
-      >
+    <div className="flex justify-center gap-3">
+      <Button variant="noShadow" onClick={() => onEdit(location)}>
         <SquarePen className="size-4" />
       </Button>
 
       <OnDeleteLoadingDialog
         status={deleteStatus}
-        handleSubmit={() => handleDeleteCourse(location.id.toString())}
+        handleSubmit={() => handleDeleteCourse(location.id)}
       />
     </div>
   );

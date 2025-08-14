@@ -1,47 +1,60 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import { Badge, type badgeVariants } from "@/components/ui/badge";
+import type { Item } from "@/types/item";
 
 interface ItemCardProps {
-  title: string;
-  username: string;
-  total: number;
-  merk: string;
-  serialNumber: string;
-  detailHref: string;
+  item: Item;
 }
 
-export function ItemCard({
-  title,
-  username,
-  total,
-  merk,
-  serialNumber,
-  detailHref,
-}: ItemCardProps) {
+export function ItemCard({ item }: ItemCardProps) {
+  const ownerVariant = item.ownerType == "SEGARIS" ? "default" : "neutral";
+  let conditionVariant: "default" | "destructive" | "neutral" = "default";
+
+  switch (item.condition) {
+    case "BAIK":
+      conditionVariant = "default";
+      break;
+    case "RUSAK":
+      conditionVariant = "destructive";
+      break;
+    case "PERBAIKAN":
+      conditionVariant = "neutral";
+      break;
+  }
+
   return (
     <Card className="shadow-shadow overflow-hidden">
       <CardContent className="flex flex-col gap-2 p-4">
         <div className="space-y-4">
           <div className="flex justify-between">
             <h1 className="text-3xl font-semibold">
-              {title} {merk}
+              {item.name} {item.merk}
             </h1>
-            <Badge className="h-6">Segaris</Badge>
+            <div className="flex gap-2">
+              <Badge variant={conditionVariant} className="h-6">
+                {item.condition}
+              </Badge>
+              <Badge variant={ownerVariant} className="h-6">
+                {item.ownerType}
+              </Badge>
+            </div>
           </div>
           <div className="flex justify-between">
             <div className="flex flex-col">
               <p className="text-base font-medium">
-                Serial Number: {serialNumber}
+                Serial Number: {item.serialNumber}
               </p>
-              <p className="text-lg font-medium">Total Barang: {total} unit</p>
+              <p className="text-lg font-medium">
+                Total Barang: {item.quantity} unit
+              </p>
             </div>
-            <p className="text-base font-semibold">{username}</p>
+            <p className="text-base font-semibold">{item.user?.name}</p>
           </div>
         </div>
         <Button asChild className="mt-7 w-full">
-          <Link href={detailHref}>Lihat selengkapnya!!</Link>
+          <Link href={`/items/${item.id}`}>Lihat selengkapnya!!</Link>
         </Button>
       </CardContent>
     </Card>

@@ -1,6 +1,5 @@
 import React, { forwardRef } from "react";
 import { HeadMetaData } from "../meta/HeadMetaData";
-import GuardedNavbar from "./GuardedNavbar";
 import { cn } from "@/lib/utils";
 import GuestNavbar from "./GuestNavbar";
 

@@ -64,7 +64,7 @@ export const itemRouter = createTRPCRouter({
                 skip: (page - 1) * perPage,
                 take: perPage,
                 where,
-                orderBy: { createdAt: "desc" },
+                orderBy: { updatedAt: "desc" },
                 include: {
                 category: { select: { id: true, name: true } },
                 user: {
@@ -96,7 +96,7 @@ export const itemRouter = createTRPCRouter({
 
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.db.item.findMany({
-            orderBy: { createdAt: "desc" }
+            orderBy: { updatedAt: "desc" }
         });
     }),
 
@@ -203,7 +203,7 @@ export const itemRouter = createTRPCRouter({
     exportCsv: publicProcedure
     .input(
       z.object({
-        startDate: z.string(),
+        startDate: z.string().optional(),
         endDate: z.string(),
       })
     )
@@ -215,10 +215,12 @@ export const itemRouter = createTRPCRouter({
 
       const items = await ctx.db.item.findMany({
         where: {
-          createdAt: {
-            gte: new Date(startDate),
-            lte: endDateObj,
-          },
+            ...(startDate && {
+                updatedAt: {
+                    gte: new Date(startDate),
+                    lte: endDateObj,
+                },
+            }),
         },
         include: {
           category: { select: { id: true, name: true } },
@@ -272,7 +274,7 @@ export const itemRouter = createTRPCRouter({
 
         csv = customHeaders + "\n" + csv;
 
-        const fileName = `Laporan Pencatatan Barang - ${new Date(startDate).toLocaleDateString("id-ID", {
+        const fileName = `Laporan Pencatatan Barang - ${new Date(endDate).toLocaleDateString("id-ID", {
             month: "long",
             year: "numeric",
         })}`;
@@ -283,7 +285,7 @@ export const itemRouter = createTRPCRouter({
     exportPDF: publicProcedure
     .input(
       z.object({
-        startDate: z.string(),
+        startDate: z.string().optional(),
         endDate: z.string(),
       })
     )
@@ -295,10 +297,12 @@ export const itemRouter = createTRPCRouter({
 
       const items = await ctx.db.item.findMany({
         where: {
-          createdAt: {
-            gte: new Date(startDate),
-            lte: endDateObj,
-          },
+            ...(startDate && {
+                updatedAt: {
+                    gte: new Date(startDate),
+                    lte: endDateObj,
+                },
+            }),
         },
       });
 
@@ -350,7 +354,7 @@ export const itemRouter = createTRPCRouter({
 </table>
 
 <p>Disampaikan dengan hormat, kami dari Unit Kerja Sarana SMKN 11 Bandung menyampaikan laporan barang untuk periode
-    ${new Date(startDate).toLocaleDateString("id-ID", { month: "long", year: "numeric" })}.
+    ${new Date(endDate).toLocaleDateString("id-ID", { month: "long", year: "numeric" })}.
 </p>
 
 <p>Dengan ini kami sampaikan laporan data barang masuk sebagai berikut:</p>
@@ -405,7 +409,7 @@ export const itemRouter = createTRPCRouter({
 
       await browser.close();
 
-      const fileName = `Laporan Pencatatan Barang - ${new Date(startDate).toLocaleDateString("id-ID", {
+      const fileName = `Laporan Pencatatan Barang - ${new Date(endDate).toLocaleDateString("id-ID", {
         month: "long",
         year: "numeric",
       })}`;

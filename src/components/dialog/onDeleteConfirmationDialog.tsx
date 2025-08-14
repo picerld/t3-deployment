@@ -9,7 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AlertTriangle, CircleCheck, Info, Loader, Trash } from "lucide-react";
+import {
+  AlertTriangle,
+  CircleCheck,
+  CloudAlert,
+  Info,
+  Loader,
+  Trash,
+} from "lucide-react";
 
 export const OnDeleteLoadingDialog = ({
   status,
@@ -28,21 +35,26 @@ export const OnDeleteLoadingDialog = ({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex items-center">
           {status === "loading" && (
-            <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-4">
-              <Info className="size-8 text-main" strokeWidth={2.5} />
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white">
+              <Info className="text-main size-8" strokeWidth={2.5} />
             </div>
           )}
 
-          {status === "error" ||
-            (status === "idle" && (
-              <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-4">
-                <AlertTriangle className="size-8 text-main" strokeWidth={2.5} />
-              </div>
-            ))}
+          {status === "error" && (
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white">
+              <CloudAlert className="text-main size-8" strokeWidth={2.5} />
+            </div>
+          )}
+
+          {status === "idle" && (
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white">
+              <AlertTriangle className="text-main size-8" strokeWidth={2.5} />
+            </div>
+          )}
 
           {status === "success" && (
-            <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mb-4">
-              <CircleCheck className="size-8 text-main" strokeWidth={2.5} />
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white">
+              <CircleCheck className="text-main size-8" strokeWidth={2.5} />
             </div>
           )}
 

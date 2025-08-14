@@ -13,15 +13,7 @@ export const ItemsCardContainer = () => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
       {items?.data.map((item) => (
-        <ItemCard
-          key={item.id}
-          title={item.name}
-          merk={item.merk}
-          serialNumber={item.serialNumber}
-          total={item.quantity}
-          username={item.user.name ?? "Unknown"}
-          detailHref={`/items/${item.id}`}
-        />
+        <ItemCard item={item} />
       ))}
     </div>
   );
