@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import { toast } from "sonner";
 import { OnDeleteLoadingDialog } from "@/components/dialog/onDeleteConfirmationDialog";
 import { type Item } from "@/types/item";
+import Link from "next/link";
 
 type ActionsCellProps = {
   item: Item;
@@ -21,12 +22,13 @@ export const ActionsCell: React.FC<ActionsCellProps> = ({ item }) => {
   };
 
   return (
-    <div className="flex gap-3 justify-center">
-      <Button
-        variant={"noShadow"}
+    <div className="flex justify-center gap-3">
+      <Link
+        href={`/items/edit/${item.id}`}
+        className={buttonVariants({ variant: "noShadow" })}
       >
         <Info className="!size-4" strokeWidth={2.5} />
-      </Button>
+      </Link>
 
       {/* <OnDeleteLoadingDialog
         status={deleteStatus}

@@ -53,7 +53,12 @@ export const userRouter = createTRPCRouter({
 
   create: publicProcedure.input(userFormSchema)
     .mutation(async ({ ctx, input }) => {
-      const hashedPassword = await bcrypt.hash(input.password, 10);
+
+      let hashedPassword = "";
+
+      if (input.password) {
+        hashedPassword = await bcrypt.hash(input.password, 10);
+      }
 
       return ctx.db.user.create({
         data: {

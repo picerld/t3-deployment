@@ -78,7 +78,7 @@ export function ItemDatatable() {
     {
       refetchOnWindowFocus: false,
       placeholderData: (previousData) => previousData,
-    }
+    },
   );
 
   if (isLoading) {
@@ -89,6 +89,10 @@ export function ItemDatatable() {
 
   const tableData: Item[] = data.data.map((item) => ({
     ...item,
+    user: {
+      ...item.user,
+      username: item.user.username ?? undefined,
+    },
     createdAt: new Date(item.createdAt),
     updatedAt: new Date(item.updatedAt),
   }));
@@ -131,7 +135,7 @@ export function ItemDatatable() {
   };
 
   return (
-    <div className="overflow-x-auto py-10 sm:w-full w-sm">
+    <div className="w-sm overflow-x-auto py-10 sm:w-full">
       <DataTable
         data={tableData}
         search={search}

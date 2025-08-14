@@ -118,6 +118,17 @@ export const itemRouter = createTRPCRouter({
         return ctx.db.item.findUnique({ where: { id: input.id } });
     }),
 
+    getByIdWithRelation: publicProcedure.input(z.object({ id: z.string() })).query(({ ctx, input }) => {
+        return ctx.db.item.findUnique({
+            where: { id: input.id },
+            include: {
+                category: true,
+                user: true,
+                location: true,
+            },
+        });
+    }),
+
     create: publicProcedure.input(itemFormSchema)
         .mutation(async ({ ctx, input }) => {
             const createdItem = await ctx.db.item.create({ data: {
@@ -174,26 +185,31 @@ export const itemRouter = createTRPCRouter({
         return createdItem;
     }),
 
-    // TODO: HANDLE UPDATE SPREADSHEET
-    update: publicProcedure.input(itemFormSchema)
-        .mutation(async ({ ctx, input }) => {
-            return ctx.db.item.update({
-                where: { id: input.id },
-                data: {
-                    name: input.name,
-                    merk: input.merk,
-                    quantity: input.quantity,
-                    color: input.color,
-                    ownerType: input.ownerType,
-                    serialNumber: input.serialNumber,
-                    condition: input.condition,
-                    history: input.history,
-                    category: { connect: { id: input.categoryId } },
-                    user: { connect: { id: input.userId } },
-                    location: { connect: { id: input.locationId } },
-                },
-            });
-        }),
+    update: publicProcedure
+    .input(
+        itemFormSchema.extend({
+        id: z.string(),
+        })
+    )
+    .mutation(async ({ ctx, input }) => {
+        return ctx.db.item.update({
+        where: { id: input.id },
+        data: {
+            name: input.name,
+            merk: input.merk,
+            quantity: input.quantity,
+            color: input.color,
+            ownerType: input.ownerType,
+            serialNumber: input.serialNumber,
+            condition: input.condition,
+            history: input.history,
+            categoryId: input.categoryId ?? Number(input.categoryId),
+            locationId: input.locationId ?? Number(input.locationId),
+            userId: input.userId ?? Number(input.userId),
+            updatedAt: new Date(),
+        },
+        });
+    }),
 
     delete: publicProcedure.input(z.object({ id: z.string() }))
         .mutation(({ ctx, input }) => {
@@ -253,6 +269,11 @@ export const itemRouter = createTRPCRouter({
             month: "long",
             year: "numeric",
         }),
+        updatedAt: new Date(item.updatedAt).toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+        }),
     }));
     
     let csv = unparse(formattedItems, { header: false, delimiter: ";" });
@@ -270,6 +291,7 @@ export const itemRouter = createTRPCRouter({
         "Penanggung Jawab",
         "Ruangan",
         "Tercatat",
+        "Diperbarui",
     ].join(";");
 
         csv = customHeaders + "\n" + csv;
@@ -365,7 +387,8 @@ export const itemRouter = createTRPCRouter({
         <th>No</th>
         <th>JENIS BARANG</th>
         <th>JUMLAH</th>
-        <th>TANGGAL</th>
+        <th>TERCATAT</th>
+        <th>DIPERBARUI</th>
         <th>KETERANGAN</th>
     </tr>
 </thead>
@@ -380,6 +403,7 @@ export const itemRouter = createTRPCRouter({
             <td>${item.name}</td>
             <td>${item.quantity ?? "-"}</td>
             <td>${new Date(item.createdAt).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</td>
+            <td>${new Date(item.updatedAt).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</td>
             <td></td>
         </tr>`
             )
@@ -410,6 +434,7 @@ export const itemRouter = createTRPCRouter({
       await browser.close();
 
       const fileName = `Laporan Pencatatan Barang - ${new Date(endDate).toLocaleDateString("id-ID", {
+        day: "2-digit",
         month: "long",
         year: "numeric",
       })}`;

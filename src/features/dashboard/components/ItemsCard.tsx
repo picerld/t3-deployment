@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Badge, type badgeVariants } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import type { Item } from "@/types/item";
 
 interface ItemCardProps {
@@ -28,6 +28,13 @@ export function ItemCard({ item }: ItemCardProps) {
     <Card className="shadow-shadow overflow-hidden">
       <CardContent className="flex flex-col gap-2 p-4">
         <div className="space-y-4">
+          <p className="flex justify-end text-sm font-semibold">
+            {item.updatedAt.toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
           <div className="flex justify-between">
             <h1 className="text-3xl font-semibold">
               {item.name} {item.merk}

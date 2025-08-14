@@ -28,7 +28,7 @@ export const authRouter = createTRPCRouter({
 
       const user = await ctx.db.user.findFirst({ where: { username } });
 
-      if (!user || !(await bcrypt.compare(password, user.password))) {
+      if (!user || !(await bcrypt.compare(password!, user.password ?? ""))) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Invalid username or password",

@@ -13,7 +13,16 @@ export const ItemsCardContainer = () => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
       {items?.data.map((item) => (
-        <ItemCard item={item} />
+        <ItemCard
+          key={item.id}
+          item={{
+            ...item,
+            user: {
+              ...item.user,
+              username: item.user.username ?? undefined,
+            },
+          }}
+        />
       ))}
     </div>
   );

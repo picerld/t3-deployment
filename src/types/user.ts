@@ -1,7 +1,7 @@
 export type User = {
     id: string;
     name?: string | null;
-    username: string;
+    username?: string;
     roleId?: number;
     role?: {
         id?: number;
