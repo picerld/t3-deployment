@@ -17,6 +17,7 @@ export const ItemsCardContainer = () => {
           key={item.id}
           item={{
             ...item,
+            photo: item.photo ?? undefined,
             user: {
               ...item.user,
               username: item.user.username ?? undefined,

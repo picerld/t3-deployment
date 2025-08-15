@@ -53,7 +53,7 @@ export const ItemFormOuter = () => {
     });
 
   async function handleItemSubmit(values: ItemFormSchema) {
-    let photoUrl: string | undefined;
+    let photoUrl: string | null = null;
 
     if (values.photo instanceof File) {
       const formData = new FormData();
@@ -71,14 +71,13 @@ export const ItemFormOuter = () => {
 
       const data = await uploadRes.json();
       photoUrl = data.url;
+    } else if (typeof values.photo === "string") {
+      photoUrl = values.photo;
     }
 
     createItem({
       ...values,
       photo: photoUrl,
-      categoryId: Number(values.categoryId),
-      locationId: Number(values.locationId),
-      quantity: Number(values.quantity),
     });
   }
 

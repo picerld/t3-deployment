@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { DetailItemCard } from "./DetailItemCard";
 import Link from "next/link";
+import Image from "next/image";
 
 export const DetailItemContainer = ({ id }: { id: string }) => {
   const { data: item, isLoading: isItemLoading } =
@@ -51,9 +52,15 @@ export const DetailItemContainer = ({ id }: { id: string }) => {
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <div className="mb-6">
-            <img
-              src="https://placehold.co/800x600/f3f4f6/9ca3af?text=Foto+Barang"
-              alt={`Foto ${item?.name}`}
+            <Image
+              src={
+                item?.photo?.startsWith("/uploads")
+                  ? item.photo
+                  : `/uploads/${item?.photo}`
+              }
+              alt={`Foto ${item?.name ?? "Barang"}`}
+              width={800}
+              height={600}
               className="h-64 w-full rounded-lg border-2 object-cover md:h-80 lg:h-96 xl:h-[28rem]"
             />
           </div>

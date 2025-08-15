@@ -177,6 +177,22 @@ export const itemRouter = createTRPCRouter({
 
     create: publicProcedure.input(itemFormSchema)
         .mutation(async ({ ctx, input }) => {
+            let photoUrl: string | null = null;
+            if (input.photo instanceof File) {
+                const formData = new FormData();
+                formData.append("photo", input.photo);
+                
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
+                    method: "POST",
+                    body: formData
+                });
+                
+                const data = await res.json();
+                photoUrl = data.url ?? null;
+            } else if (typeof input.photo === "string") {
+                photoUrl = input.photo;
+            }
+
             const createdItem = await ctx.db.item.create({ data: {
                 name: input.name,
                 merk: input.merk,
@@ -185,7 +201,7 @@ export const itemRouter = createTRPCRouter({
                 ownerType: input.ownerType,
                 serialNumber: input.serialNumber,
                 condition: input.condition,
-                photo: input.photo,
+                photo: photoUrl,
                 history: input.history,
                 category: { connect: { id: input.categoryId } },
                 user: { connect: { id: input.userId } },

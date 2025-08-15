@@ -49,7 +49,7 @@ export const ItemPageContainer = () => {
   const [selectedOwnerType, setSelectedOwnerType] = useState("all");
   const [selectedCondition, setSelectedCondition] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("updatedAt");
 
   const { data: items = [] } = trpc.items.getAll.useQuery();
   const { data: categories = [] } = trpc.categories.getAll.useQuery();
