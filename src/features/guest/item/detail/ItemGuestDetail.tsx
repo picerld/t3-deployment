@@ -63,18 +63,24 @@ export const ItemGuestDetail = ({ id }: { id: string }) => {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <div className="mb-6">
-            <Image
-              src={
-                item?.photo?.startsWith("/uploads")
-                  ? item.photo
-                  : `/uploads/${item?.photo}`
-              }
-              alt={`Foto ${item?.name ?? "Barang"}`}
-              width={800}
-              height={600}
-              className="h-64 w-full rounded-lg border-2 object-cover md:h-80 lg:h-96 xl:h-[28rem]"
-            />
+          <div className="mb-6 rounded-lg border-2">
+            {item?.photo ? (
+              <Image
+                src={
+                  item.photo.startsWith("/uploads")
+                    ? item.photo
+                    : `/uploads/${item.photo}`
+                }
+                alt={`Foto ${item?.name ?? "Barang"}`}
+                width={800}
+                height={600}
+                className="h-64 w-full rounded-lg border-2 object-cover md:h-80 lg:h-96 xl:h-[28rem]"
+              />
+            ) : (
+              <div className="bg-main flex h-64 w-full items-center justify-center rounded-lg text-xl md:h-80 lg:h-96 xl:h-[28rem]">
+                Barang ini belum ada foto!
+              </div>
+            )}
           </div>
 
           {item?.history && (

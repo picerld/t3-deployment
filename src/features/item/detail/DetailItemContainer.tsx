@@ -12,6 +12,8 @@ import {
   MapPin,
   Package,
   FileText,
+  ShieldAlert,
+  KeySquare,
 } from "lucide-react";
 import { DetailItemCard } from "./DetailItemCard";
 import Link from "next/link";
@@ -51,18 +53,24 @@ export const DetailItemContainer = ({ id }: { id: string }) => {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <div className="mb-6">
-            <Image
-              src={
-                item?.photo?.startsWith("/uploads")
-                  ? item.photo
-                  : `/uploads/${item?.photo}`
-              }
-              alt={`Foto ${item?.name ?? "Barang"}`}
-              width={800}
-              height={600}
-              className="h-64 w-full rounded-lg border-2 object-cover md:h-80 lg:h-96 xl:h-[28rem]"
-            />
+          <div className="mb-6 rounded-lg border-2">
+            {item?.photo ? (
+              <Image
+                src={
+                  item.photo.startsWith("/uploads")
+                    ? item.photo
+                    : `/uploads/${item.photo}`
+                }
+                alt={`Foto ${item?.name ?? "Barang"}`}
+                width={800}
+                height={600}
+                className="h-64 w-full rounded-lg border-2 object-cover md:h-80 lg:h-96 xl:h-[28rem]"
+              />
+            ) : (
+              <div className="bg-background flex h-64 w-full items-center justify-center rounded-lg text-xl md:h-80 lg:h-96 xl:h-[28rem]">
+                Barang ini belum ada foto!
+              </div>
+            )}
           </div>
 
           {item?.history && (
@@ -83,6 +91,22 @@ export const DetailItemContainer = ({ id }: { id: string }) => {
         </div>
 
         <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <ShieldAlert className="h-5 w-5" strokeWidth={2.5} />
+                Kredensial
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DetailItemCard
+                icon={KeySquare}
+                label="Serial Number"
+                value={item?.serialNumber}
+              />
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">

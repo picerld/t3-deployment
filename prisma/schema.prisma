@@ -77,24 +77,25 @@ enum Condition {
 }
 
 model Item {
-  id           String        @id @default(uuid())
-  name         String
-  merk         String
-  categoryId   Int
-  quantity     Int
-  userId       String
-  color        String
-  ownerType    OwnershipType
-  locationId   Int
-  serialNumber String
-  condition    Condition
-  photo        String?
-  history      String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @default(now())
-  category     Category      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Restrict)
-  user         User          @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
-  location     Location      @relation(fields: [locationId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  id             String        @id @default(uuid())
+  name           String
+  merk           String
+  categoryId     Int
+  quantity       Int
+  userId         String
+  color          String
+  ownerType      OwnershipType
+  locationId     Int
+  serialNumber   String
+  condition      Condition
+  photo          String?
+  photoCondition String?
+  history        String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
+  category       Category      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  user           User          @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
+  location       Location      @relation(fields: [locationId], references: [id], onUpdate: Cascade, onDelete: Restrict)
 
   @@unique([serialNumber])
   @@index([categoryId])

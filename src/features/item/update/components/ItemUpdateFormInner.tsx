@@ -19,6 +19,7 @@ import { trpc } from "@/utils/trpc";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import type { ItemFormSchema } from "../../create/forms/item";
+import { PhotoUploadCard } from "../../create/components/PhotoUploadCard";
 
 type ItemUpdateFormInnerProps = {
   onItemSubmit: (value: ItemFormSchema) => void;
@@ -39,6 +40,8 @@ export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
     trpc.locations.getAll.useQuery();
 
   const form = useFormContext<ItemFormSchema>();
+
+  const condition = form.watch("condition");
 
   return (
     <form onSubmit={form.handleSubmit(onItemSubmit)}>
@@ -120,6 +123,7 @@ export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="condition"
@@ -146,6 +150,10 @@ export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
               </FormItem>
             )}
           />
+
+          {condition !== "BAIK" && (
+            <PhotoUploadCard label="Foto Barang Terkini" />
+          )}
 
           <FormField
             control={form.control}

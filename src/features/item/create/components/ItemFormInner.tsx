@@ -46,80 +46,86 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
       <div className="space-y-6">
         <PhotoUploadCard />
 
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Nama Barang</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="merk"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Merk</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="categoryId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Kategori Barang</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value?.toString()}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value?.toString()}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih kategori" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categoriesIsLoading ? (
-                      <p>Loading...</p>
-                    ) : (
-                      categories?.map((category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id.toString()}
-                        >
-                          {category.name}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="color"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Warna Barang</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-10">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">Nama Barang</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="merk"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">Merk</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-10">
+          <FormField
+            control={form.control}
+            name="categoryId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">
+                  Kategori Barang
+                </FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value?.toString()}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value?.toString()}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih kategori" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categoriesIsLoading ? (
+                        <p>Loading...</p>
+                      ) : (
+                        categories?.map((category) => (
+                          <SelectItem
+                            key={category.id}
+                            value={category.id.toString()}
+                          >
+                            {category.name}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="color"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">Warna Barang</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="condition"
@@ -147,108 +153,114 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="quantity"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Kuantiti</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  value={field.value}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^\d*$/.test(value)) {
-                      field.onChange(Number(value));
-                    }
-                  }}
-                  disabled={isPending}
-                  type="text"
-                />
-              </FormControl>
-              <FormDescription>Ketikan angka!</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="serialNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Serial Number</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormDescription>
-                Pastikan serial number barang sudah sesuai!
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="ownerType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">
-                Jenis Kepemilikan
-              </FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih kategori" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="SEGARIS">Segaris</SelectItem>
-                    <SelectItem value="IMN">IMN</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="locationId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Ruangan</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value?.toString()}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih ruangan" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {locationIsLoading ? (
-                      <p>Loading...</p>
-                    ) : (
-                      locations?.map((location) => (
-                        <SelectItem
-                          key={location.id}
-                          value={location.id.toString()}
-                        >
-                          {location.name}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-10">
+          <FormField
+            control={form.control}
+            name="quantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">Kuantiti</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={field.value}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d*$/.test(value)) {
+                        field.onChange(Number(value));
+                      }
+                    }}
+                    disabled={isPending}
+                    type="text"
+                  />
+                </FormControl>
+                <FormDescription>Ketikan angka!</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="serialNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">Serial Number</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Pastikan serial number barang sudah sesuai!
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-10">
+          <FormField
+            control={form.control}
+            name="ownerType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">
+                  Jenis Kepemilikan
+                </FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih kategori" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="SEGARIS">Segaris</SelectItem>
+                      <SelectItem value="IMN">IMN</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="locationId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">Ruangan</FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value?.toString()}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih ruangan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {locationIsLoading ? (
+                        <p>Loading...</p>
+                      ) : (
+                        locations?.map((location) => (
+                          <SelectItem
+                            key={location.id}
+                            value={location.id.toString()}
+                          >
+                            {location.name}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
           name="userId"

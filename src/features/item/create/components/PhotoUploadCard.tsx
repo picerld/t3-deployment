@@ -10,7 +10,11 @@ import { Button } from "@/components/ui/button";
 import { UploadIcon, X } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
-export function PhotoUploadCard() {
+export function PhotoUploadCard({
+  label = "Foto Barang",
+}: {
+  readonly label?: string;
+}) {
   const { setValue, watch } = useFormContext();
   const currentFile = watch("photo") as File | undefined;
   const [preview, setPreview] = useState<string | null>(null);
@@ -28,9 +32,9 @@ export function PhotoUploadCard() {
   };
 
   return (
-    <Card className="w-full mb-8">
+    <Card className="mb-8 w-full">
       <CardHeader>
-        <CardTitle>Foto Barang</CardTitle>
+        <CardTitle>{label}</CardTitle>
         <CardDescription>Unggah foto barang dengan jelas.</CardDescription>
       </CardHeader>
       <CardContent>
@@ -42,7 +46,7 @@ export function PhotoUploadCard() {
             <UploadIcon className="text-muted-foreground h-10 w-10" />
             <p className="text-muted-foreground mt-2 text-sm">
               <span className="font-semibold">Klik untuk unggah</span> atau
-              tarik file ke sini
+              ambil dari kamera
             </p>
             <p className="text-muted-foreground text-xs">
               PNG, JPG, GIF — Max 2MB
@@ -65,7 +69,7 @@ export function PhotoUploadCard() {
             <button
               type="button"
               onClick={handleRemove}
-              className="absolute top-2 right-2 rounded-full bg-main p-1 shadow transition hover:bg-main/80"
+              className="bg-main hover:bg-main/80 absolute top-2 right-2 rounded-full p-1 shadow transition"
             >
               <X size={16} />
             </button>

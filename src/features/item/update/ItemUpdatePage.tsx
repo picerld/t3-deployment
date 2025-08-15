@@ -3,8 +3,9 @@ import GuardedLayout from "@/components/layout/GuardedLayout";
 import { HeadMetaData } from "@/components/meta/HeadMetaData";
 import { ItemFormOuterUpdate } from "./components/ItemUpdateFormOuter";
 import Link from "next/link";
-import { ChevronLeft, PanelsTopLeft } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { ChevronLeft, PanelsTopLeft, Printer } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function ItemDetailPage({
   params,
@@ -20,12 +21,28 @@ export default function ItemDetailPage({
         >
           <ChevronLeft className="!size-5" strokeWidth={2.5} /> Kembali
         </Link>
-        <Link
-          href={`/items/${params.id}`}
-          className={buttonVariants({ variant: "neutral", className: "mb-5" })}
-        >
-          <PanelsTopLeft className="!size-5" strokeWidth={2.5} /> Preview
-        </Link>
+        <div className="flex gap-3">
+          <Link
+            href={`/items/${params.id}`}
+            className={buttonVariants({
+              variant: "neutral",
+              className: "mb-5",
+            })}
+          >
+            <PanelsTopLeft className="!size-5" strokeWidth={2.5} /> Lihat dalam
+            card
+          </Link>
+          <Button
+            onClick={() => {
+              toast.success("Sukses!!", {
+                description: "Data barang berhasil di print.",
+              });
+            }}
+          >
+            <Printer className="!size-5" strokeWidth={2.5} />
+            Print
+          </Button>
+        </div>
       </div>
       <HeadMetaData title="Edit Data Barang" />
       <Header
