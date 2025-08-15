@@ -20,12 +20,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import type { ItemFormSchema } from "../../create/forms/item";
 
-type ItemUpdateFormInner = {
+type ItemUpdateFormInnerProps = {
   onItemSubmit: (value: ItemFormSchema) => void;
   isPending: boolean;
 };
 
-export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
+export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
   onItemSubmit,
   isPending,
 }) => {
@@ -39,10 +39,11 @@ export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
     trpc.locations.getAll.useQuery();
 
   const form = useFormContext<ItemFormSchema>();
+
   return (
     <form onSubmit={form.handleSubmit(onItemSubmit)}>
-      <div className="space-y-6 pt-5">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-10 pt-5 md:grid-cols-2">
+        <div className="space-y-6">
           <FormField
             control={form.control}
             name="name"
@@ -69,8 +70,6 @@ export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
               </FormItem>
             )}
           />
-        </div>
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="categoryId"
@@ -121,40 +120,33 @@ export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
               </FormItem>
             )}
           />
-        </div>
-        <FormField
-          control={form.control}
-          name="condition"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Kondisi Barang</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih kondisi" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem key="BAIK" value={"BAIK"}>
-                      BAIK
-                    </SelectItem>
-                    <SelectItem key="RUSAK" value={"RUSAK"}>
-                      RUSAK
-                    </SelectItem>
-                    <SelectItem key="PERBAIKAN" value={"PERBAIKAN"}>
-                      PERBAIKAN
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="condition"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">Kondisi Barang</FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih kondisi" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="BAIK">BAIK</SelectItem>
+                      <SelectItem value="RUSAK">RUSAK</SelectItem>
+                      <SelectItem value="PERBAIKAN">PERBAIKAN</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="quantity"
@@ -196,8 +188,6 @@ export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
               </FormItem>
             )}
           />
-        </div>
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
           <FormField
             control={form.control}
             name="ownerType"
@@ -216,12 +206,8 @@ export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
                       <SelectValue placeholder="Pilih kategori" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem key="SEGARIS" value={"SEGARIS"}>
-                        Segaris
-                      </SelectItem>
-                      <SelectItem key="IMN" value={"IMN"}>
-                        IMN
-                      </SelectItem>
+                      <SelectItem value="SEGARIS">Segaris</SelectItem>
+                      <SelectItem value="IMN">IMN</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -237,7 +223,7 @@ export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
                 <FormLabel className="flex font-bold">Ruangan</FormLabel>
                 <FormControl>
                   <Select
-                    value={field.value.toString()}
+                    value={field.value?.toString()}
                     onValueChange={field.onChange}
                   >
                     <SelectTrigger>
@@ -263,66 +249,68 @@ export const ItemFormInner: React.FC<ItemUpdateFormInner> = ({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="userId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex font-bold">
+                  Penanggung Jawab
+                </FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value?.toString()}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih penanggung jawab" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {usersIsLoading ? (
+                        <p>Loading...</p>
+                      ) : (
+                        users?.map((user) => (
+                          <SelectItem key={user.id} value={user.id.toString()}>
+                            {user.name ?? user.username}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <FormField
-          control={form.control}
-          name="userId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">Penanggung Jawab</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value.toString()}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih penanggung jawab" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {usersIsLoading ? (
-                      <p>Loading...</p>
-                    ) : (
-                      users?.map((user) => (
-                        <SelectItem key={user.id} value={user.id.toString()}>
-                          {user.name ?? user.username}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="history"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex font-bold">
-                Histori Penggunaan
-              </FormLabel>
-              <FormControl>
-                <Textarea rows={10} {...field} />
-              </FormControl>
-              <FormDescription>Histori barang harus lengkap!</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
+        <div className="flex h-full flex-col">
+          <FormField
+            control={form.control}
+            name="history"
+            render={({ field }) => (
+              <FormItem className="flex flex-1 flex-col">
+                <FormLabel className="flex font-bold">
+                  Histori Penggunaan
+                </FormLabel>
+                <FormControl className="flex-1">
+                  <Textarea
+                    rows={25}
+                    className="min-h-full flex-1"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Histori barang harus lengkap dan jelas.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
       </div>
 
-      <div className="mt-5 flex justify-end gap-3">
-        <Button
-          type="reset"
-          disabled={isPending}
-          variant="neutral"
-          onClick={() => form.reset()}
-          className="w-full sm:max-w-[150px]"
-        >
-          Reset Form!!
-        </Button>
+      <div className="mt-20 flex justify-end gap-3">
         <Button
           type="submit"
           disabled={isPending}

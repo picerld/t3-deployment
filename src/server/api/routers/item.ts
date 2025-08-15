@@ -185,6 +185,7 @@ export const itemRouter = createTRPCRouter({
                 ownerType: input.ownerType,
                 serialNumber: input.serialNumber,
                 condition: input.condition,
+                photo: input.photo,
                 history: input.history,
                 category: { connect: { id: input.categoryId } },
                 user: { connect: { id: input.userId } },

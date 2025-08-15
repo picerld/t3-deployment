@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { itemFormSchema, type ItemFormSchema } from "../../create/forms/item";
-import { ItemFormInner } from "../../create/components/ItemFormInner";
+import { ItemUpdateFormInner } from "./ItemUpdateFormInner";
 
 type Props = {
   id: string;
@@ -80,7 +80,7 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
 
   return (
     <Form {...form}>
-      <ItemFormInner
+      <ItemUpdateFormInner
         onItemSubmit={handleItemSubmit}
         isPending={updateItemIsPending || isItemLoading}
       />

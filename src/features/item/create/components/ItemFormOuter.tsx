@@ -1,3 +1,4 @@
+// components/items/ItemFormOuter.tsx
 import { Form } from "@/components/ui/form";
 import { trpc } from "@/utils/trpc";
 import { useForm } from "react-hook-form";
@@ -6,9 +7,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { ItemFormInner } from "./ItemFormInner";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export const ItemFormOuter = () => {
   const router = useRouter();
+
+  const form = useForm<ItemFormSchema>({
+    resolver: zodResolver(itemFormSchema),
+    defaultValues: {
+      name: "",
+      merk: "",
+      categoryId: undefined,
+      quantity: 0,
+      userId: "",
+      color: "",
+      ownerType: "SEGARIS",
+      locationId: undefined,
+      serialNumber: "",
+      condition: "BAIK",
+      history: "",
+      photo: undefined,
+    },
+  });
 
   const { mutate: createItem, isPending: createItemIsPending } =
     trpc.items.create.useMutation({
@@ -16,9 +36,7 @@ export const ItemFormOuter = () => {
         toast.success("Berhasil!!", {
           description: "Barang berhasil dicatatkan!",
         });
-
         form.reset();
-
         router.push("/items");
       },
       onError: (error) => {
@@ -34,27 +52,34 @@ export const ItemFormOuter = () => {
       },
     });
 
-  const form = useForm<ItemFormSchema>({
-    resolver: zodResolver(itemFormSchema),
-    defaultValues: {
-      name: "",
-      merk: "",
-      quantity: 0,
-      color: "",
-      ownerType: "SEGARIS",
-      serialNumber: "",
-      condition: "BAIK",
-      history: "",
-    },
-    disabled: createItemIsPending,
-  });
+  async function handleItemSubmit(values: ItemFormSchema) {
+    let photoUrl: string | undefined;
 
-  function handleItemSubmit(value: ItemFormSchema) {
-    try {
-      createItem(value);
-    } catch (error) {
-      console.error(error);
+    if (values.photo instanceof File) {
+      const formData = new FormData();
+      formData.append("file", values.photo);
+
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) {
+        toast.error("Gagal mengunggah foto");
+        return;
+      }
+
+      const data = await uploadRes.json();
+      photoUrl = data.url;
     }
+
+    createItem({
+      ...values,
+      photo: photoUrl,
+      categoryId: Number(values.categoryId),
+      locationId: Number(values.locationId),
+      quantity: Number(values.quantity),
+    });
   }
 
   return (
