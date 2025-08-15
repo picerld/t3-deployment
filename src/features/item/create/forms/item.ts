@@ -13,6 +13,7 @@ export const itemFormSchema = z.object({
     locationId: itemLocationIdSchema,
     serialNumber: itemSerialNumber,
     condition: itemConditionSchema,
+    photo: z.string().optional(),
     history: itemHistorySchema,
 });
 

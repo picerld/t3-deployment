@@ -38,6 +38,7 @@ export default function GuardedLayout({
 
   const navItem = [
     { name: "Dashboard", href: "/dashboard", active: false },
+    { name: "Statistik", href: "/statistik", active: false },
     { name: "Barang", href: "/items", active: false },
     { name: "Kategori", href: "/categories", active: false },
     { name: "Lokasi", href: "/locations", active: false },
@@ -54,7 +55,7 @@ export default function GuardedLayout({
   );
 
   const group2 = updatedNavItem.filter((item) =>
-    ["Barang", "Dashboard"].includes(item.name),
+    ["Barang", "Dashboard", "Statistik"].includes(item.name),
   );
 
   const logoutMutation = trpc.auth.logout.useMutation({
@@ -92,7 +93,7 @@ export default function GuardedLayout({
             <div className="flex items-center space-x-4">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button className="flex md:hidden">
+                  <Button className="flex lg:hidden">
                     <Menu className="mr-1 !size-5" strokeWidth={2.5} />
                   </Button>
                 </SheetTrigger>
@@ -148,7 +149,7 @@ export default function GuardedLayout({
                   </SheetFooter>
                 </SheetContent>
               </Sheet>
-              <div className="hidden items-center space-x-2 sm:flex">
+              <div className="hidden items-center space-x-2 lg:flex">
                 <Link href={"/"}>
                   <h1 className="text-2xl font-bold text-black dark:text-white">
                     Inventory
@@ -175,7 +176,7 @@ export default function GuardedLayout({
           </div>
         </div>
 
-        <div className="dark:bg-secondary-background fixed top-16 left-0 hidden h-full w-64 overflow-y-auto border border-r-4 border-black bg-white md:block">
+        <div className="dark:bg-secondary-background fixed top-16 left-0 hidden h-full w-64 overflow-y-auto border border-r-4 border-black bg-white lg:block">
           <nav className="flex h-full flex-col text-black dark:text-white">
             <div className="dark:bg-secondary-background flex items-center border-b-4 border-black bg-white py-3 pl-5 text-lg font-semibold">
               Menu
@@ -218,7 +219,7 @@ export default function GuardedLayout({
           </nav>
         </div>
 
-        <div className="bg-secondary-background dark:bg-secondary-background min-h-screen flex-1 pt-16 text-black md:ml-64 dark:text-white">
+        <div className="bg-secondary-background dark:bg-secondary-background min-h-screen flex-1 pt-16 text-black lg:ml-64 dark:text-white">
           <div className="min-h-screen w-full px-5 py-10 sm:px-8 sm:py-14">
             {children}
           </div>

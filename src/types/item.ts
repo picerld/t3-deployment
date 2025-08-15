@@ -14,6 +14,7 @@ export type Item = {
     locationId: number;
     serialNumber: string;
     condition: string;
+    photo?: string;
     history?: string;
     category?: Category;
     location: Location;

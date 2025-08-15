@@ -7,9 +7,12 @@ import { trpc } from "@/utils/trpc";
 import Cookies from "js-cookie";
 import { skipToken } from "@tanstack/react-query";
 import React from "react";
+import { usePathname } from "next/navigation";
 
 export default function GuestNavbar() {
   const token = Cookies.get("auth.token");
+
+  const pathName = usePathname();
 
   const [mounted, setMounted] = React.useState(false);
 
@@ -28,13 +31,31 @@ export default function GuestNavbar() {
     return null;
   }
 
+  const navItems = [
+    { name: "Beranda", href: "/", active: false },
+    { name: "Barang", href: "/guest/items", active: false },
+  ];
+
+  const updatedNavItem = navItems.map((item) => ({
+    ...item,
+    active: pathName === item.href,
+  }));
+
   return (
     <header className="bg-background dark:bg-secondary-background shadow-shadow fixed w-full px-10 py-5">
       <div className="container mx-auto flex items-center justify-between sm:px-32">
         <nav className="flex w-full items-center justify-start gap-6">
-          <Link href={"/"} className="text-foreground text-xl">
-            Beranda
-          </Link>
+          {updatedNavItem.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`text-foreground text-lg ${
+                item.active ? "font-semibold text-xl" : ""
+              }`}
+            >
+              {item.name}
+            </Link>
+          ))}
         </nav>
         <div className="flex justify-end gap-3">
           <ModeToggle />

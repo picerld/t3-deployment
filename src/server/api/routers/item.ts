@@ -4,6 +4,7 @@ import z from "zod";
 import puppeteer from "puppeteer";
 import { unparse } from "papaparse";
 import { sheets } from "@/lib/googleSheets";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 const SHEET_ID = "1ZRIoydJIHfiCg23mfrzwS4pC3d5s_qOR5KAVNGxZ57k";
 
@@ -96,8 +97,53 @@ export const itemRouter = createTRPCRouter({
 
     getAll: publicProcedure.query(({ ctx }) => {
         return ctx.db.item.findMany({
-            orderBy: { updatedAt: "desc" }
+            orderBy: { updatedAt: "desc" },
+            include: {
+                category: { select: { id: true, name: true } },
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        role: { select: { name: true } },
+                    },
+                },
+                location: { select: { id: true, name: true } },
+            }
         });
+    }),
+
+    getMonthlyCounts: publicProcedure.query(async ({ ctx }) => {
+        const currentYear = new Date().getFullYear();
+
+        const months = Array.from({ length: 12 }, (_, i) => {
+            const date = new Date(currentYear, i, 1);
+
+            return {
+                month: date.toLocaleString("default", { month: "long" }),
+                start: startOfMonth(date),
+                end: endOfMonth(date),
+            }
+        });
+
+        const data = await Promise.all(
+            months.map(async (month) => {
+                const items = await ctx.db.item.count({
+                    where: {
+                        createdAt: {
+                            gte: month.start,
+                            lte: month.end,
+                        },
+                    },
+                });
+
+                return {
+                    month: month.month,
+                    items,
+                };
+            }),
+        );
+        return data;
     }),
 
     getTodayCount: publicProcedure.query(({ ctx }) => {

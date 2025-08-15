@@ -88,6 +88,7 @@ model Item {
   locationId   Int
   serialNumber String
   condition    Condition
+  photo        String?
   history      String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @default(now())

@@ -51,6 +51,14 @@ export const userRouter = createTRPCRouter({
     return ctx.db.user.count();
   }),
 
+  getUserWithoutAccount: publicProcedure.query(({ ctx }) => {
+    return ctx.db.user.count({
+      where: {
+        username: null
+      },
+    });
+  }),
+
   create: publicProcedure.input(userFormSchema)
     .mutation(async ({ ctx, input }) => {
 
