@@ -35,6 +35,10 @@ export default function ItemDetailPage({
           </Link>
 
           <PrintContainer id={params.id} />
+          <Button>
+            <Printer />
+            Print serah terima!
+          </Button>
         </div>
       </div>
       <HeadMetaData title="Edit Data Barang" />

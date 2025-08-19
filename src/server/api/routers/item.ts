@@ -1,7 +1,8 @@
 import { itemFormSchema } from "@/features/item/create/forms/item";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import z from "zod";
-import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 import { unparse } from "papaparse";
 import { sheets } from "@/lib/googleSheets";
 import { endOfMonth, startOfMonth } from "date-fns";
@@ -479,10 +480,16 @@ export const itemRouter = createTRPCRouter({
 </html>
 `;
 
-      const browser = await puppeteer.launch({
-        headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      });
+    const isDev = process.env.NODE_ENV === "development";
+
+    const browser = await puppeteer.launch({
+    args: isDev ? [] : chromium.args,
+    executablePath: isDev
+        ? (await import("puppeteer")).executablePath()
+        : await chromium.executablePath(),
+    headless: true,
+    });
+
       const page = await browser.newPage();
       await page.setContent(html, { waitUntil: "networkidle0" });
 
