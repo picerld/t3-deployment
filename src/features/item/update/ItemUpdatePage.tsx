@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, PanelsTopLeft, Printer } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { toast } from "sonner";
+import { PrintContainer } from "../detail/PrintContainer";
 
 export default function ItemDetailPage({
   params,
@@ -32,16 +33,8 @@ export default function ItemDetailPage({
             <PanelsTopLeft className="!size-5" strokeWidth={2.5} /> Lihat dalam
             card
           </Link>
-          <Button
-            onClick={() => {
-              toast.success("Sukses!!", {
-                description: "Data barang berhasil di print.",
-              });
-            }}
-          >
-            <Printer className="!size-5" strokeWidth={2.5} />
-            Print
-          </Button>
+
+          <PrintContainer id={params.id} />
         </div>
       </div>
       <HeadMetaData title="Edit Data Barang" />
