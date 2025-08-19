@@ -3,11 +3,10 @@ import GuardedLayout from "@/components/layout/GuardedLayout";
 import { HeadMetaData } from "@/components/meta/HeadMetaData";
 import { ItemFormOuterUpdate } from "./components/ItemUpdateFormOuter";
 import Link from "next/link";
-import { ChevronLeft, PanelsTopLeft, Printer } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { toast } from "sonner";
-import { PrintContainer } from "../detail/PrintContainer";
-import { SerahTerima } from "../detail/SerahTerima";
+import { ChevronLeft, PanelsTopLeft } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { PrintLabelContainer } from "../detail/label-section/PrintLabelContainer";
+import { PrintSerahTerimaContainer } from "../detail/serah-terima-section/PrintSerahTerimaContainer";
 
 export default function ItemDetailPage({
   params,
@@ -35,9 +34,9 @@ export default function ItemDetailPage({
             card
           </Link>
 
-          <PrintContainer id={params.id} />
+          <PrintLabelContainer id={params.id} />
 
-          <SerahTerima itemId={params.id} />
+          <PrintSerahTerimaContainer itemId={params.id} />
         </div>
       </div>
       <HeadMetaData title="Edit Data Barang" />

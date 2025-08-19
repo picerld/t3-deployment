@@ -70,14 +70,16 @@ const printFields: PrintField[] = [
   },
 ];
 
-export const PrintContainer = ({ id }: { id: string }) => {
+export const PrintLabelContainer = ({ id }: { id: string }) => {
   const { data: item, isLoading: isItemLoading } =
     trpc.items.getByIdWithRelation.useQuery({
       id,
     });
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const reactToPrintFn = useReactToPrint({ contentRef });
+  const reactToPrintFn = useReactToPrint({
+    contentRef,
+  });
 
   const [selectedFields, setSelectedFields] = useState<Set<string>>(
     new Set(
@@ -183,7 +185,7 @@ export const PrintContainer = ({ id }: { id: string }) => {
               <div className="flex items-center justify-center py-5">
                 <div
                   ref={contentRef}
-                  className="flex w-full max-w-2xl rounded-lg border-2 bg-white p-6 shadow-sm"
+                  className="flex w-full max-w-2xl rounded-lg bg-white p-6 shadow-sm"
                 >
                   {isItemLoading ? (
                     <div className="w-full py-8 text-center">
@@ -245,4 +247,4 @@ export const PrintContainer = ({ id }: { id: string }) => {
   );
 };
 
-PrintContainer.displayName = "PrintContainer";
+PrintLabelContainer.displayName = "PrintLabelContainer";

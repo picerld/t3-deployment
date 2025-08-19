@@ -67,7 +67,7 @@ const serahTerimaFields: SerahTerimaField[] = [
   {
     key: "unit",
     label: "Unit",
-    getValue: (item) => "Set", // Default unit
+    getValue: (item) => "Set",
     showInTable: true,
   },
   {
@@ -82,12 +82,6 @@ const serahTerimaFields: SerahTerimaField[] = [
     getValue: (item) => item?.location?.name || "",
     showInTable: false,
   },
-  {
-    key: "description",
-    label: "Keterangan",
-    getValue: (item) => item?.description || "",
-    showInTable: false,
-  },
 ];
 
 interface SerahTerimaProps {
@@ -95,7 +89,10 @@ interface SerahTerimaProps {
   documentNumber?: string;
 }
 
-export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
+export const PrintSerahTerimaContainer = ({
+  itemId,
+  documentNumber,
+}: SerahTerimaProps) => {
   const { data: item, isLoading: isItemLoading } =
     trpc.items.getByIdWithRelation.useQuery({
       id: itemId,
@@ -113,10 +110,10 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
   );
 
   const [documentInfo, setDocumentInfo] = useState({
-    number: documentNumber || `003/MJ/SGRS/VIII/2025`,
+    number: documentNumber || `000/XX/SGRS/XXXX/${new Date().getFullYear()}`,
     submitter: "Syarif Hidayat",
     reviewer: "Tanty Chris Tanty",
-    receiver: "Ressa Ayub Bungsu",
+    receiver: "",
   });
 
   const getCurrentDate = () => {
@@ -148,6 +145,7 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
     } else {
       newSelectedFields.add(fieldKey);
     }
+    
     setSelectedFields(newSelectedFields);
   };
 
@@ -172,7 +170,7 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
       <DialogTrigger asChild>
         <Button>
           <FileText className="mr-2 h-5 w-5" strokeWidth={2.5} />
-          Buat Serah Terima
+          Buat serah terima!
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto md:min-w-6xl">
@@ -185,7 +183,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Document Info Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Informasi Dokumen</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -244,7 +241,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
             </div>
           </div>
 
-          {/* Field Selection */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="flex items-center gap-2 text-lg font-semibold">
@@ -290,7 +286,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
             </div>
           </div>
 
-          {/* Preview Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Preview Dokumen</h3>
 
@@ -304,7 +299,7 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
               <div className="flex items-center justify-center py-5">
                 <div
                   ref={contentRef}
-                  className="w-full max-w-4xl rounded-lg border-2 bg-white p-8 shadow-sm"
+                  className="h-screen w-full rounded-lg bg-white p-8 shadow-sm"
                   style={{ fontFamily: "Arial, sans-serif" }}
                 >
                   {isItemLoading ? (
@@ -313,7 +308,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
                     </div>
                   ) : item ? (
                     <div className="space-y-6">
-                      {/* Header */}
                       <div className="flex items-start justify-between">
                         <div>
                           <h1 className="text-xl font-bold text-blue-600">
@@ -328,7 +322,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
                         </div>
                       </div>
 
-                      {/* Document Number */}
                       <div className="space-y-2">
                         <p className="text-sm">
                           <span className="font-medium">Nomor: </span>
@@ -339,7 +332,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
                         </p>
                       </div>
 
-                      {/* Table */}
                       <div className="border border-gray-300">
                         <table className="w-full border-collapse">
                           <thead>
@@ -448,7 +440,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
                         </table>
                       </div>
 
-                      {/* Date and Signatures */}
                       <div className="space-y-6">
                         <p className="text-sm">{getCurrentDate()}</p>
 
@@ -491,7 +482,6 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
                         </div>
                       </div>
 
-                      {/* Footer */}
                       <div className="mt-8 border-t border-gray-200 pt-4">
                         <div className="space-y-1 text-xs text-gray-500">
                           <p className="font-semibold">
@@ -518,7 +508,7 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
         <DialogFooter className="flex gap-2">
           <DialogClose asChild>
             <Button variant="neutral" className="flex-1">
-              Batal
+              Tidak, kembali!
             </Button>
           </DialogClose>
           <Button
@@ -532,7 +522,7 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
             }}
           >
             <Printer className="mr-2 h-4 w-4" strokeWidth={2.5} />
-            Print Serah Terima
+            Ya, Print serah terima!
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -540,4 +530,4 @@ export const SerahTerima = ({ itemId, documentNumber }: SerahTerimaProps) => {
   );
 };
 
-SerahTerima.displayName = "SerahTerima";
+PrintSerahTerimaContainer.displayName = "PrintSerahTerimaContainer";

@@ -1,10 +1,11 @@
 import GuardedLayout from "@/components/layout/GuardedLayout";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { DetailItemContainer } from "@/features/item/detail/DetailItemContainer";
-import { ChevronLeft, Printer } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { PrintContainer } from "@/features/item/detail/PrintContainer";
+import { PrintLabelContainer } from "@/features/item/detail/label-section/PrintLabelContainer";
+import { PrintSerahTerimaContainer } from "@/features/item/detail/serah-terima-section/PrintSerahTerimaContainer";
 
 export default function Page() {
   const router = useRouter();
@@ -28,12 +29,9 @@ export default function Page() {
         </Link>
 
         <div className="flex gap-3">
-          <PrintContainer id={id} />
+          <PrintLabelContainer id={id} />
 
-          <Button>
-            <Printer />
-            Print serah terima!
-          </Button>
+          <PrintSerahTerimaContainer itemId={id} />
         </div>
       </div>
 
