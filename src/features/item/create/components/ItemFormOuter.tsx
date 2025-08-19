@@ -26,6 +26,7 @@ export const ItemFormOuter = () => {
       serialNumber: "",
       condition: "BAIK",
       history: "",
+      detail: "",
       photo: undefined,
     },
   });
@@ -36,8 +37,13 @@ export const ItemFormOuter = () => {
         toast.success("Berhasil!!", {
           description: "Barang berhasil dicatatkan!",
         });
+
         form.reset();
-        router.push("/items");
+        
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       },
       onError: (error) => {
         if (error.data?.code === "UNAUTHORIZED") {

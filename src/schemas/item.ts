@@ -45,3 +45,7 @@ export const itemConditionSchema = z.enum(["BAIK", "RUSAK", "PERBAIKAN"], {
 export const itemHistorySchema = z
     .string()
     .min(3, { message: "History minimal 3 karakter" })
+
+export const itemDetailSchema = z.
+    string()
+    .optional();

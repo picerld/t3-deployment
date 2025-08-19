@@ -204,6 +204,7 @@ export const itemRouter = createTRPCRouter({
                 condition: input.condition,
                 photo: photoUrl,
                 history: input.history,
+                detail: input.detail,
                 category: { connect: { id: input.categoryId } },
                 user: { connect: { id: input.userId } },
                 location: { connect: { id: input.locationId } },
@@ -411,26 +412,22 @@ export const itemRouter = createTRPCRouter({
 </head>
 <body>
 <div class="header">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Coat_of_arms_of_West_Java.svg/1200px-Coat_of_arms_of_West_Java.svg.png" alt="Logo Jawa Barat">
-    <h5>PEMERINTAH DAERAH PROVINSI JAWA BARAT</h5>
-    <h5>DINAS PENDIDIKAN</h5>
-    <h5>CABANG DINAS PENDIDIKAN WILAYAH VII</h5>
-    <h3>SMK NEGERI 11 KOTA BANDUNG</h3>
-    <p>Jl. Budhi Cilember No. 23 Bandung, 40175 Telp/Fax: (022) 6653424</p>
-    <p>http://smkn11bdg.sch.id | Email: smkn11bdg@gmail.com</p>
+    <h3>SEGARIS MEDIA TEKNOLOGI</h3>
+    <p>Jl. Gn. Kurnia No.8 (+62) 880-654-5643</p>
+    <p>https://segarismedia.com/ | Email: segarismedia@gmail.com</p>
 </div>
 
-<h4 style="text-align: center; margin-top: 10px;">LAPORAN DATA BARANG MASUK</h4>
+<h4 style="text-align: center; margin-top: 10px;">LAPORAN DATA PENCATATAN BARANG</h4>
 
 <table style="width: 100%;">
     <tbody>
         <tr>
-            <td style="width: 50%;">Kepada Yth</td>
-            <td>: Kepala Sekolah</td>
+            <td style="width: 50%;">Yang Mengetahui</td>
+            <td>: Tanty Chris Tanty</td>
         </tr>
         <tr>
-            <td>Dari</td>
-            <td>: Sarana</td>
+            <td>Yang Menyerahkan</td>
+            <td>: Syarif Hidayat</td>
         </tr>
         <tr>
             <td>Tanggal</td>
@@ -439,17 +436,17 @@ export const itemRouter = createTRPCRouter({
     </tbody>
 </table>
 
-<p>Disampaikan dengan hormat, kami dari Unit Kerja Sarana SMKN 11 Bandung menyampaikan laporan barang untuk periode
+<p>Disampaikan dengan hormat, kami dari Management team Segaris Media Teknologi menyampaikan laporan barang untuk periode
     ${new Date(endDate).toLocaleDateString("id-ID", { month: "long", year: "numeric" })}.
 </p>
 
-<p>Dengan ini kami sampaikan laporan data barang masuk sebagai berikut:</p>
+<p>Dengan ini kami sampaikan laporan data barang sebagai berikut:</p>
 
 <table class="table">
 <thead>
     <tr>
         <th>No</th>
-        <th>JENIS BARANG</th>
+        <th>NAMA BARANG</th>
         <th>JUMLAH</th>
         <th>TERCATAT</th>
         <th>DIPERBARUI</th>

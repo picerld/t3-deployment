@@ -74,6 +74,26 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="detail"
+          render={({ field }) => (
+            <FormItem className="flex flex-1 flex-col">
+              <FormLabel className="flex font-bold">
+                Detail Spesifikasi (opsional)
+              </FormLabel>
+              <FormControl className="flex-1">
+                <Textarea rows={10} {...field} />
+              </FormControl>
+              <FormDescription>
+                Contoh: Spesifikasi, ram, layar, dll
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="grid grid-cols-2 gap-10">
           <FormField
             control={form.control}

@@ -1,7 +1,7 @@
 import GuardedLayout from "@/components/layout/GuardedLayout";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { DetailItemContainer } from "@/features/item/detail/DetailItemContainer";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Printer } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { PrintContainer } from "@/features/item/detail/PrintContainer";
@@ -27,7 +27,14 @@ export default function Page() {
           Kembali ke Dashboard
         </Link>
 
-        <PrintContainer id={id} />
+        <div className="flex gap-3">
+          <PrintContainer id={id} />
+
+          <Button>
+            <Printer />
+            Print serah terima!
+          </Button>
+        </div>
       </div>
 
       <DetailItemContainer id={id} />

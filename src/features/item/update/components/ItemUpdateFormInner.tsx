@@ -292,25 +292,43 @@ export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
           />
         </div>
 
-        <div className="flex h-full flex-col">
+        <div className="flex h-full flex-col gap-10">
           <FormField
             control={form.control}
             name="history"
             render={({ field }) => (
-              <FormItem className="flex flex-1 flex-col">
+              <FormItem className="flex flex-[0.7] flex-col">
                 <FormLabel className="flex font-bold">
                   Histori Penggunaan
                 </FormLabel>
                 <FormControl className="flex-1">
                   <Textarea
-                    rows={25}
+                    rows={12}
                     className="min-h-full flex-1"
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>
-                  Histori barang harus lengkap dan jelas.
-                </FormDescription>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="detail"
+            render={({ field }) => (
+              <FormItem className="flex flex-[0.3] flex-col">
+                <FormLabel className="flex font-bold">
+                  Detail Spesifikasi
+                </FormLabel>
+                <FormControl className="flex-1">
+                  <Textarea
+                    rows={12}
+                    className="min-h-full flex-1"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription></FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -324,7 +342,7 @@ export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
           disabled={isPending}
           className="w-full sm:max-w-[150px]"
         >
-          {isPending ? "Loading..." : "Catat Barang!"}
+          {isPending ? "Loading..." : "Perbarui Barang!"}
         </Button>
       </div>
     </form>

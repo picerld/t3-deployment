@@ -7,6 +7,7 @@ import { ChevronLeft, PanelsTopLeft, Printer } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { toast } from "sonner";
 import { PrintContainer } from "../detail/PrintContainer";
+import { SerahTerima } from "../detail/SerahTerima";
 
 export default function ItemDetailPage({
   params,
@@ -35,10 +36,8 @@ export default function ItemDetailPage({
           </Link>
 
           <PrintContainer id={params.id} />
-          <Button>
-            <Printer />
-            Print serah terima!
-          </Button>
+
+          <SerahTerima itemId={params.id} />
         </div>
       </div>
       <HeadMetaData title="Edit Data Barang" />

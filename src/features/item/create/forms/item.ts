@@ -1,4 +1,4 @@
-import { itemCategoryIdSchema, itemColor, itemConditionSchema, itemHistorySchema, itemLocationIdSchema, itemMerkSchema, itemNameSchema, itemOwnerTypeSchema, itemPic, itemQuantitySchema, itemSerialNumber } from "@/schemas/item";
+import { itemCategoryIdSchema, itemColor, itemConditionSchema, itemDetailSchema, itemHistorySchema, itemLocationIdSchema, itemMerkSchema, itemNameSchema, itemOwnerTypeSchema, itemPic, itemQuantitySchema, itemSerialNumber } from "@/schemas/item";
 import z from "zod";
 
 export const itemFormSchema = z.object({
@@ -15,6 +15,7 @@ export const itemFormSchema = z.object({
     condition: itemConditionSchema,
     photo: z.union([z.instanceof(File), z.string(), z.null()]).optional(),
     history: itemHistorySchema,
+    detail: itemDetailSchema,
 });
 
 export type ItemFormSchema = z.infer<typeof itemFormSchema>;

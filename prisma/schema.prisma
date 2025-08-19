@@ -91,6 +91,7 @@ model Item {
   photo          String?
   photoCondition String?
   history        String
+  detail         String?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @default(now())
   category       Category      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Restrict)

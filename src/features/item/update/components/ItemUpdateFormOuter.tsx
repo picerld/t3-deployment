@@ -52,6 +52,7 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
       serialNumber: "",
       condition: "BAIK",
       history: "",
+      detail: "",
     },
     disabled: updateItemIsPending || isItemLoading,
   });
@@ -67,6 +68,7 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
         serialNumber: itemData.serialNumber ?? "",
         condition: itemData.condition ?? "BAIK",
         history: itemData.history ?? "",
+        detail: itemData.detail ?? "",
         categoryId: itemData.categoryId,
         locationId: itemData.locationId,
         userId: itemData.userId?.toString(),
