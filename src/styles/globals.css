@@ -66,6 +66,19 @@
   --font-weight-heading: 700;
 }
 
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: white !important;
+  }
+
+  .print-container {
+    background: white !important;
+  }
+}
+
+
 @layer base {
   body {
     @apply text-foreground font-base bg-background;

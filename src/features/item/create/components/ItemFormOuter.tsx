@@ -1,4 +1,3 @@
-// components/items/ItemFormOuter.tsx
 import { Form } from "@/components/ui/form";
 import { trpc } from "@/utils/trpc";
 import { useForm } from "react-hook-form";

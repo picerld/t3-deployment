@@ -19,11 +19,12 @@ export const itemRouter = createTRPCRouter({
         category: z.string().optional().default(""),
         owner: z.string().optional().default(""),
         condition: z.string().optional().default(""),
+        user: z.string().optional().default(""),
         })
     )
     .query(async ({ ctx, input }) => {
         const start = performance.now();
-        const { page, perPage, search, category, owner, condition } = input;
+        const { page, perPage, search, category, owner, condition, user } = input;
 
     const where: import("@prisma/client").Prisma.ItemWhereInput = {
     ...(search
@@ -55,6 +56,15 @@ export const itemRouter = createTRPCRouter({
         ? {
             condition: {
                 equals: condition as "BAIK" | "RUSAK" | "PERBAIKAN",
+            },
+        }
+        : {}),
+    ...(user
+        ? {
+            user: {
+                id: {
+                    equals: user,
+                },
             },
         }
         : {}),
@@ -163,6 +173,10 @@ export const itemRouter = createTRPCRouter({
 
     getById: publicProcedure.input(z.object({ id: z.string() })).query(({ ctx, input }) => {
         return ctx.db.item.findUnique({ where: { id: input.id } });
+    }),
+
+    getByIds: publicProcedure.input(z.object({ ids: z.array(z.string()) })).query(({ ctx, input }) => {
+        return ctx.db.item.findMany({ where: { id: { in: input.ids } } });
     }),
 
     getByIdWithRelation: publicProcedure.input(z.object({ id: z.string() })).query(({ ctx, input }) => {

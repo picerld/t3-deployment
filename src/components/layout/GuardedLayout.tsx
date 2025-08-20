@@ -39,6 +39,7 @@ export default function GuardedLayout({
   const navItem = [
     { name: "Dashboard", href: "/dashboard", active: false },
     { name: "Statistik", href: "/statistik", active: false },
+    { name: "Dokumen", href: "/documents", active: false },
     { name: "Barang", href: "/items", active: false },
     { name: "Kategori", href: "/categories", active: false },
     { name: "Lokasi", href: "/locations", active: false },
@@ -55,7 +56,7 @@ export default function GuardedLayout({
   );
 
   const group2 = updatedNavItem.filter((item) =>
-    ["Barang", "Dashboard", "Statistik"].includes(item.name),
+    ["Barang", "Dashboard", "Statistik", "Dokumen"].includes(item.name),
   );
 
   const logoutMutation = trpc.auth.logout.useMutation({

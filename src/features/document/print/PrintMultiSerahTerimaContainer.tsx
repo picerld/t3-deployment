@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { trpc } from "@/utils/trpc";
+
 import { FileText, Settings, Printer } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -85,20 +83,13 @@ const serahTerimaFields: SerahTerimaField[] = [
   },
 ];
 
-interface SerahTerimaProps {
-  itemId: string;
-  documentNumber?: string;
-}
-
-export const PrintSerahTerimaContainer = ({
-  itemId,
+export const PrintMultiSerahTerimaContainer = ({
+  selectedItems,
   documentNumber,
-}: SerahTerimaProps) => {
-  const { data: item, isLoading: isItemLoading } =
-    trpc.items.getByIdWithRelation.useQuery({
-      id: itemId,
-    });
-
+}: {
+  selectedItems: any[];
+  documentNumber?: string;
+}) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
 
@@ -146,7 +137,6 @@ export const PrintSerahTerimaContainer = ({
     } else {
       newSelectedFields.add(fieldKey);
     }
-
     setSelectedFields(newSelectedFields);
   };
 
@@ -169,17 +159,17 @@ export const PrintSerahTerimaContainer = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
-          <FileText className="mr-2 h-5 w-5" strokeWidth={2.5} />
-          Buat serah terima!
+        <Button disabled={selectedItems.length === 0}>
+          <FileText className="mr-2 h-4 w-4" strokeWidth={2.5} />
+          Buat Serah Terima ({selectedItems.length} items)
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto md:min-w-6xl">
         <DialogHeader>
           <DialogTitle className="text-2xl">Serah Terima Barang</DialogTitle>
           <DialogDescription className="text-lg">
-            Pilih field yang ingin ditampilkan pada dokumen serah terima, lalu
-            cek preview sebelum print!
+            Membuat dokumen serah terima untuk {selectedItems.length} barang
+            yang dipilih
           </DialogDescription>
         </DialogHeader>
 
@@ -300,85 +290,69 @@ export const PrintSerahTerimaContainer = ({
               <div className="flex items-center justify-center py-5">
                 <div
                   ref={contentRef}
-                  className="h-screen w-full rounded-lg bg-white p-8 shadow-sm"
+                  className="print-container w-full rounded-lg bg-white p-8 shadow-sm"
                   style={{ fontFamily: "Arial, sans-serif" }}
                 >
-                  {isItemLoading ? (
-                    <div className="w-full py-8 text-center">
-                      <p>Loading data...</p>
+                  <div className="space-y-6">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h1 className="text-xl font-bold text-blue-600">
+                          SEGARIS MEDIA TEKNOLOGI
+                        </h1>
+                        <p className="text-sm font-semibold text-gray-600">
+                          TANDA TERIMA BARANG
+                        </p>
+                      </div>
+                      <Image
+                        src="/assets/logo-print.jpeg"
+                        alt="logo"
+                        width={100}
+                        height={100}
+                      />
                     </div>
-                  ) : item ? (
-                    <div className="space-y-6">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h1 className="text-xl font-bold text-blue-600">
-                            SEGARIS MEDIA TEKNOLOGI
-                          </h1>
-                          <p className="text-sm font-semibold text-gray-600">
-                            TANDA TERIMA BARANG
-                          </p>
-                        </div>
-                        <Image
-                          src="/assets/logo-print.jpeg"
-                          alt="logo"
-                          width={100}
-                          height={100}
-                        />
-                      </div>
 
-                      <div className="space-y-2">
-                        <p className="text-sm">
-                          <span className="font-medium">Nomor: </span>
-                          {documentInfo.number}
-                        </p>
-                        <p className="text-sm font-medium">
-                          Telah serah terima barang berupa:
-                        </p>
-                      </div>
+                    <div className="space-y-2">
+                      <p className="text-sm">
+                        <span className="font-medium">Nomor: </span>
+                        {documentInfo.number}
+                      </p>
+                      <p className="text-sm font-medium">
+                        Telah serah terima barang berupa:
+                      </p>
+                    </div>
 
-                      <div className="border border-gray-300">
-                        <table className="w-full border-collapse">
-                          <thead>
-                            <tr className="bg-blue-500 text-white">
+                    <div className="border border-gray-300">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-blue-500 text-white">
+                            <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
+                              No
+                            </th>
+                            <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
+                              Description
+                            </th>
+                            {tableFields.some((f) => f.key === "quantity") && (
                               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
-                                No
+                                Qty
                               </th>
+                            )}
+                            {tableFields.some((f) => f.key === "unit") && (
                               <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
-                                Description
+                                Unit
                               </th>
-                              {tableFields.includes(
-                                serahTerimaFields.find(
-                                  (f) => f.key === "quantity",
-                                )!,
-                              ) && (
-                                <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
-                                  Qty
-                                </th>
-                              )}
-                              {tableFields.includes(
-                                serahTerimaFields.find(
-                                  (f) => f.key === "unit",
-                                )!,
-                              ) && (
-                                <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
-                                  Unit
-                                </th>
-                              )}
-                              {tableFields.includes(
-                                serahTerimaFields.find(
-                                  (f) => f.key === "condition",
-                                )!,
-                              ) && (
-                                <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
-                                  Kondisi
-                                </th>
-                              )}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="bg-white">
+                            )}
+                            {tableFields.some((f) => f.key === "condition") && (
+                              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">
+                                Kondisi
+                              </th>
+                            )}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {selectedItems.map((item, index) => (
+                            <tr key={item.id} className="bg-white">
                               <td className="border border-gray-300 px-3 py-2 text-center text-sm">
-                                1
+                                {index + 1}
                               </td>
                               <td className="border border-gray-300 px-3 py-2 text-sm">
                                 <div className="space-y-1">
@@ -406,10 +380,8 @@ export const PrintSerahTerimaContainer = ({
                                     ))}
                                 </div>
                               </td>
-                              {tableFields.includes(
-                                serahTerimaFields.find(
-                                  (f) => f.key === "quantity",
-                                )!,
+                              {tableFields.some(
+                                (f) => f.key === "quantity",
                               ) && (
                                 <td className="border border-gray-300 px-3 py-2 text-center text-sm">
                                   {serahTerimaFields
@@ -417,21 +389,15 @@ export const PrintSerahTerimaContainer = ({
                                     ?.getValue(item)}
                                 </td>
                               )}
-                              {tableFields.includes(
-                                serahTerimaFields.find(
-                                  (f) => f.key === "unit",
-                                )!,
-                              ) && (
+                              {tableFields.some((f) => f.key === "unit") && (
                                 <td className="border border-gray-300 px-3 py-2 text-center text-sm">
                                   {serahTerimaFields
                                     .find((f) => f.key === "unit")
                                     ?.getValue(item)}
                                 </td>
                               )}
-                              {tableFields.includes(
-                                serahTerimaFields.find(
-                                  (f) => f.key === "condition",
-                                )!,
+                              {tableFields.some(
+                                (f) => f.key === "condition",
                               ) && (
                                 <td className="border border-gray-300 px-3 py-2 text-center text-sm">
                                   {serahTerimaFields
@@ -440,69 +406,61 @@ export const PrintSerahTerimaContainer = ({
                                 </td>
                               )}
                             </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
 
-                      <div className="space-y-6">
-                        <p className="text-sm">{getCurrentDate()}</p>
+                    <div className="space-y-6">
+                      <p className="text-sm">{getCurrentDate()}</p>
 
-                        <div className="grid grid-cols-3 gap-8">
-                          <div className="space-y-16 text-center">
+                      <div className="grid grid-cols-3 gap-8">
+                        <div className="space-y-16 text-center">
+                          <p className="text-sm font-medium">
+                            Yang Menyerahkan,
+                          </p>
+                          <div className="space-y-2">
+                            <div className="h-12 border-b border-gray-400"></div>
                             <p className="text-sm font-medium">
-                              Yang Menyerahkan,
+                              {documentInfo.submitter}
                             </p>
-                            <div className="space-y-2">
-                              <div className="h-12 border-b border-gray-400"></div>
-                              <p className="text-sm font-medium">
-                                {documentInfo.submitter}
-                              </p>
-                            </div>
                           </div>
+                        </div>
 
-                          <div className="space-y-16 text-center">
+                        <div className="space-y-16 text-center">
+                          <p className="text-sm font-medium">
+                            Yang Mengetahui,
+                          </p>
+                          <div className="space-y-2">
+                            <div className="h-12 border-b border-gray-400"></div>
                             <p className="text-sm font-medium">
-                              Yang Mengetahui,
+                              {documentInfo.reviewer}
                             </p>
-                            <div className="space-y-2">
-                              <div className="h-12 border-b border-gray-400"></div>
-                              <p className="text-sm font-medium">
-                                {documentInfo.reviewer}
-                              </p>
-                            </div>
                           </div>
+                        </div>
 
-                          <div className="space-y-16 text-center">
+                        <div className="space-y-16 text-center">
+                          <p className="text-sm font-medium">Yang Menerima,</p>
+                          <div className="space-y-2">
+                            <div className="h-12 border-b border-gray-400"></div>
                             <p className="text-sm font-medium">
-                              Yang Menerima,
+                              {documentInfo.receiver}
                             </p>
-                            <div className="space-y-2">
-                              <div className="h-12 border-b border-gray-400"></div>
-                              <p className="text-sm font-medium">
-                                {documentInfo.receiver}
-                              </p>
-                            </div>
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      <div className="mt-8 border-t border-gray-200 pt-4">
-                        <div className="space-y-1 text-xs text-gray-500">
-                          <p className="font-semibold">
-                            PT Segaris Media Teknologi
-                          </p>
-                          <p>Virtual Simulation Software Developer</p>
-                          <p>
-                            www.segarismedia.co.id | mail@segarismedia.co.id
-                          </p>
-                        </div>
+                    <div className="mt-8 border-t border-gray-200 pt-4">
+                      <div className="space-y-1 text-xs text-gray-500">
+                        <p className="font-semibold">
+                          PT Segaris Media Teknologi
+                        </p>
+                        <p>Virtual Simulation Software Developer</p>
+                        <p>www.segarismedia.co.id | mail@segarismedia.co.id</p>
                       </div>
                     </div>
-                  ) : (
-                    <div className="w-full py-8 text-center">
-                      <p className="text-base">Item tidak ditemukan</p>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </div>
             )}
@@ -517,10 +475,10 @@ export const PrintSerahTerimaContainer = ({
           </DialogClose>
           <Button
             className="flex-1"
-            disabled={selectedFields.size === 0 || isItemLoading}
+            disabled={selectedFields.size === 0}
             onClick={() => {
               toast.success("Sukses!", {
-                description: `Dokumen serah terima dengan 1 barang berhasil diprint.`,
+                description: `Dokumen serah terima dengan ${selectedItems.length} barang berhasil diprint.`,
               });
               reactToPrintFn();
             }}
@@ -533,5 +491,3 @@ export const PrintSerahTerimaContainer = ({
     </Dialog>
   );
 };
-
-PrintSerahTerimaContainer.displayName = "PrintSerahTerimaContainer";
