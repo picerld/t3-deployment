@@ -16,7 +16,7 @@ export const MultiPrintItemCard = ({
   return (
     <Card
       key={item.id}
-      className={`cursor-pointer transition-all ${
+      className={`hover:bg-main cursor-pointer transition-all duration-200 hover:scale-95 active:scale-100 ${
         selectedItems.includes(item.id) ? "bg-main" : ""
       }`}
       onClick={() =>
@@ -30,13 +30,18 @@ export const MultiPrintItemCard = ({
             onChange={() => {}}
             className="mt-1"
           />
-          <Badge variant="neutral" className="text-xs">
+          <Badge
+            variant={selectedItems.includes(item.id) ? "neutral" : "default"}
+            className="text-xs"
+          >
             {item.condition}
           </Badge>
         </div>
 
         <div className="space-y-2">
-          <h3 className="line-clamp-2 text-lg font-bold">{item.name}</h3>
+          <h3 className="line-clamp-2 text-lg font-bold">
+            {item.name} {item.merk}
+          </h3>
 
           <div className="space-y-1 text-xs text-gray-600">
             {item.serialNumber && (
