@@ -3,6 +3,7 @@ import { nameSchema, roleSchema } from "@/schemas/user";
 import z from "zod";
 
 export const userFormSchema = z.object({
+    id: z.string().optional(),
     name: nameSchema,
     username: usernameSchema,
     password: passwordSchema,

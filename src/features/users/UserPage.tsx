@@ -4,6 +4,7 @@ import { HeadMetaData } from "@/components/meta/HeadMetaData";
 import { buttonVariants } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { UserDatatable } from "./components/datatable/user-datatable";
 
 export default function UserPage() {
   return (
@@ -20,6 +21,10 @@ export default function UserPage() {
           Tambah User <Plus className="size-14" strokeWidth={3} />
         </Link>
       </Header>
+
+      <div className="w-full">
+        <UserDatatable />
+      </div>
     </GuardedLayout>
   );
 }
