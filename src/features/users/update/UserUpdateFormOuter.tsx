@@ -38,7 +38,7 @@ export const UserUpdateFormOuter = ({
   const updateUserMutation = trpc.users.update.useMutation({
     onSuccess: () => {
       toast.success("Berhasil!!", {
-        description: "Ruangan berhasil diperbarui!",
+        description: "User berhasil diperbarui!",
       });
 
       form.reset();
@@ -70,20 +70,19 @@ export const UserUpdateFormOuter = ({
             roleId: res.data.roleId,
           });
         }
-
-        console.log(res.data);
       });
     }
   }, [open, userId, refetch, form]);
 
   function handleUpdateLocation(data: UserFormSchema) {
-    updateUserMutation.mutate({
-      id: data.id,
-      name: data.name,
-      username: data.username,
-      password: data.password,
-      roleId: data.roleId,
-    });
+    toast.info("Maaf! Fitur ini sedang dalam maintenance");
+    // NOTE: CANNOT UPDATE FOR NOW
+    // updateUserMutation.mutate({
+    //   id: data.id,
+    //   name: data.name,
+    //   username: data.username,
+    //   roleId: data.roleId,
+    // });
   }
 
   return (

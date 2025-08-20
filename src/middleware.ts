@@ -28,7 +28,7 @@ export const config = {
     "/items/:path*",
     "/categories/:path*",
     "/locations/:path*",
-    "/users/:path*",
+    // "/users/:path*",
     "/statistik/:path*",
     "/documents/:path*",
   ],

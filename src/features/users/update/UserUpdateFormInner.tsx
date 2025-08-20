@@ -46,9 +46,9 @@ export const UserUpdateFormInner: React.FC<UserUpdateFormInnerProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Edit Ruangan</DialogTitle>
+          <DialogTitle className="text-2xl">Edit Akun</DialogTitle>
           <DialogDescription className="text-base">
-            Ubah ruangan dan klik simpan.
+            Ubah informasi akun dan klik simpan.
           </DialogDescription>
         </DialogHeader>
 
@@ -82,7 +82,7 @@ export const UserUpdateFormInner: React.FC<UserUpdateFormInnerProps> = ({
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
@@ -94,7 +94,7 @@ export const UserUpdateFormInner: React.FC<UserUpdateFormInnerProps> = ({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <FormField
               control={form.control}

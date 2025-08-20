@@ -31,7 +31,7 @@ export const ActionsCell: React.FC<ActionsCellProps> = ({
 
       setDeleteStatus("success");
       toast.success("Berhasil!!", {
-        description: "Ruangan berhasil dihapus!",
+        description: "User berhasil dihapus!",
       });
 
       setTimeout(() => window.location.reload(), 1000);
