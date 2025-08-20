@@ -16,6 +16,7 @@ import {
 } from "../ui/sheet";
 import React from "react";
 import { skipToken } from "@tanstack/react-query";
+import GlobalSearch from "./GlobalSearch";
 
 export default function GuardedLayout({
   children,
@@ -160,10 +161,7 @@ export default function GuardedLayout({
               <nav className="flex items-center space-x-6"></nav>
             </div>
             <div className="flex items-center space-x-4">
-              <Button className="hidden px-5 sm:flex">
-                <Search className="mr-1 h-4 w-4" />
-                Search
-              </Button>
+              <GlobalSearch />
               <ModeToggle />
               <Button
                 onClick={handleLogout}

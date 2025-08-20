@@ -10,6 +10,28 @@ import { endOfMonth, startOfMonth } from "date-fns";
 const SHEET_ID = "1ZRIoydJIHfiCg23mfrzwS4pC3d5s_qOR5KAVNGxZ57k";
 
 export const itemRouter = createTRPCRouter({
+      search: publicProcedure
+    .input(z.object({ query: z.string().min(1) }))
+    .query(async ({ ctx, input }) => {
+      const { query } = input;
+
+      const items = await ctx.db.item.findMany({
+        where: {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+        take: 10,
+      });
+
+      return items;
+    }),
+
     getPaginated: publicProcedure
     .input(
         z.object({

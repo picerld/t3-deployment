@@ -290,7 +290,7 @@ export const PrintMultiSerahTerimaContainer = ({
               <div className="flex items-center justify-center py-5">
                 <div
                   ref={contentRef}
-                  className="print-container w-full rounded-lg bg-white p-8 shadow-sm"
+                  className="print-container w-full rounded-lg bg-white p-8"
                   style={{ fontFamily: "Arial, sans-serif" }}
                 >
                   <div className="space-y-6">

@@ -300,7 +300,7 @@ export const PrintSerahTerimaContainer = ({
               <div className="flex items-center justify-center py-5">
                 <div
                   ref={contentRef}
-                  className="h-screen w-full rounded-lg bg-white p-8 shadow-sm"
+                  className="h-screen w-full rounded-lg bg-white p-8"
                   style={{ fontFamily: "Arial, sans-serif" }}
                 >
                   {isItemLoading ? (
