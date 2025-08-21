@@ -198,7 +198,13 @@ export const itemRouter = createTRPCRouter({
     }),
 
     getByIds: publicProcedure.input(z.object({ ids: z.array(z.string()) })).query(({ ctx, input }) => {
-        return ctx.db.item.findMany({ where: { id: { in: input.ids } } });
+        return ctx.db.item.findMany({ where: { id: { in: input.ids } }, 
+            include: 
+            { 
+                category: true, 
+                location: true 
+            } 
+        });
     }),
 
     getByIdWithRelation: publicProcedure.input(z.object({ id: z.string() })).query(({ ctx, input }) => {

@@ -27,7 +27,7 @@ export const UserPasswordUpdateFormOuter = ({
     resolver: zodResolver(userPasswordFormSchema),
     defaultValues: {
       id: userId,
-      oldPassword: "",
+      // oldPassword: "",
       password: "",
     },
   });
@@ -77,9 +77,9 @@ export const UserPasswordUpdateFormOuter = ({
   function handleUpdatePassword(data: UserPasswordFormSchema) {
     updatePasswordUserMutation.mutate({
       id: data.id,
-      oldPassword: data.oldPassword,
+      // oldPassword: data.oldPassword,
       password: data.password,
-      confirmPassword: data.confirmPassword,
+      // confirmPassword: data.confirmPassword,
     });
   }
 

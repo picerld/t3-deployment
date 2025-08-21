@@ -125,28 +125,47 @@ export const userRouter = createTRPCRouter({
         });
     }),
 
-  updatePassword: publicProcedure
-    .input(userPasswordFormSchema)
+    updatePassword: publicProcedure.input(userPasswordFormSchema)
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({
-        where: { id: input.id },
-      });
+        const user = await ctx.db.user.findUnique({
+            where: { id: input.id },
+        });
 
-      if (!user) {
-        throw new Error("User not found");
-      }
+        if (!user) {
+            throw new Error("User not found");
+        }
 
-      const isValid = await bcrypt.compare(input.oldPassword, user.password!);
-      if (!isValid) {
-        throw new Error("Password lama salah");
-      }
+        const hashedPassword = await bcrypt.hash(input.password, 10);
+        
+        return ctx.db.user.update({
+            where: { id: input.id },
+            data: {
+                password: hashedPassword,
+            }
+        });
+    })
 
-      // hash new password
-      const hashedPassword = await bcrypt.hash(input.password!, 10);
+  // updatePassword: publicProcedure
+  //   .input(userPasswordFormSchema)
+  //   .mutation(async ({ ctx, input }) => {
+  //     const user = await ctx.db.user.findUnique({
+  //       where: { id: input.id },
+  //     });
 
-      return ctx.db.user.update({
-        where: { id: input.id },
-        data: { password: hashedPassword },
-      });
-    }),
+  //     if (!user) {
+  //       throw new Error("User not found");
+  //     }
+
+  //     const isValid = await bcrypt.compare(input.oldPassword, user.password!);
+  //     if (!isValid) {
+  //       throw new Error("Password lama salah");
+  //     }
+
+  //     const hashedPassword = await bcrypt.hash(input.password!, 10);
+
+  //     return ctx.db.user.update({
+  //       where: { id: input.id },
+  //       data: { password: hashedPassword },
+  //     });
+  //   }),
 });

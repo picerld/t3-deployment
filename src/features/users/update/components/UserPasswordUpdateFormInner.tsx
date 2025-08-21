@@ -56,7 +56,7 @@ export const UserPasswordUpdateFormInner: React.FC<
         <form onSubmit={form.handleSubmit(onUserPasswordUpdateSubmit)}>
           <div className="space-y-6">
             {/* Old Password */}
-            <FormField
+            {/* <FormField
               control={form.control}
               name="oldPassword"
               render={({ field }) => (
@@ -89,9 +89,8 @@ export const UserPasswordUpdateFormInner: React.FC<
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
-            {/* New Password */}
             <FormField
               control={form.control}
               name="password"
@@ -128,7 +127,7 @@ export const UserPasswordUpdateFormInner: React.FC<
             />
 
             {/* Confirm Password */}
-            <FormField
+            {/* <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
@@ -166,7 +165,7 @@ export const UserPasswordUpdateFormInner: React.FC<
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             {/* <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
               <Checkbox
