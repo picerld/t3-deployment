@@ -9,7 +9,10 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-export function columns(onEdit: (user: User) => void): ColumnDef<User>[] {
+export function columns(
+  onEdit: (user: User) => void,
+  onPassword: (user: User) => void,
+): ColumnDef<User>[] {
   return [
     {
       id: "select",
@@ -89,20 +92,20 @@ export function columns(onEdit: (user: User) => void): ColumnDef<User>[] {
     //     const realPassword = decodeURIComponent(row.original.password || "");
 
     //     return (
-    //       <div className="flex items-center gap-2">
-    //         <span className="font-mono">
-    //           {show
-    //             ? realPassword
-    //             : "•".repeat(row.original?.password?.length ?? 0)}
-    //         </span>
-    //         <button
-    //           type="button"
-    //           onClick={() => setShow(!show)}
-    //           className="text-gray-500 hover:text-black"
-    //         >
-    //           {show ? <EyeOff size={16} /> : <Eye size={16} />}
-    //         </button>
-    //       </div>
+          // <div className="flex items-center gap-2">
+          //   <span className="font-mono">
+          //     {show
+          //       ? realPassword
+          //       : "•".repeat(row.original?.password?.length ?? 0)}
+          //   </span>
+          //   <button
+          //     type="button"
+          //     onClick={() => setShow(!show)}
+          //     className="text-gray-500 hover:text-black"
+          //   >
+          //     {show ? <EyeOff size={16} /> : <Eye size={16} />}
+          //   </button>
+          // </div>
     //     );
     //   },
     // },
@@ -131,7 +134,9 @@ export function columns(onEdit: (user: User) => void): ColumnDef<User>[] {
       cell: ({ row }) => {
         const user = row.original;
 
-        return <ActionsCell user={user} onEdit={onEdit} />;
+        return (
+          <ActionsCell user={user} onEdit={onEdit} onPassword={onPassword} />
+        );
       },
     },
   ];

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SquarePen } from "lucide-react";
+import { ShieldAlert, SquarePen } from "lucide-react";
 import { toast } from "sonner";
 import { OnDeleteLoadingDialog } from "@/components/dialog/onDeleteConfirmationDialog";
 import { trpc } from "@/utils/trpc";
@@ -11,11 +11,13 @@ import type { User } from "@/types/user";
 type ActionsCellProps = {
   user: User;
   onEdit: (user: User) => void;
+  onPassword: (user: User) => void;
 };
 
 export const ActionsCell: React.FC<ActionsCellProps> = ({
   user,
   onEdit,
+  onPassword,
 }) => {
   const [deleteStatus, setDeleteStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -47,6 +49,9 @@ export const ActionsCell: React.FC<ActionsCellProps> = ({
 
   return (
     <div className="flex justify-center gap-3">
+      <Button variant={"noShadow"} onClick={() => onPassword(user)}>
+        <ShieldAlert className="size-4" />
+      </Button>
       <Button variant="noShadow" onClick={() => onEdit(user)}>
         <SquarePen className="size-4" />
       </Button>

@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { UserFormSchema } from "../create/forms/user";
+import type { UserFormSchema } from "../../create/forms/user";
 import {
   Select,
   SelectContent,
@@ -46,7 +46,7 @@ export const UserUpdateFormInner: React.FC<UserUpdateFormInnerProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Edit Akun</DialogTitle>
+          <DialogTitle className="text-2xl">Edit Informasi Akun</DialogTitle>
           <DialogDescription className="text-base">
             Ubah informasi akun dan klik simpan.
           </DialogDescription>

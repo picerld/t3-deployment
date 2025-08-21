@@ -5,8 +5,11 @@ import { userFormSchema, type UserFormSchema } from "../forms/user";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
 import { UserFormInner } from "./UserFormInner";
+import { useRouter } from "next/navigation";
 
 export const UserFormOuter = () => {
+  const router = useRouter();
+
   const { mutate: createUser, isPending: createUserIsPending } =
     trpc.users.create.useMutation({
       onSuccess: () => {
@@ -15,6 +18,8 @@ export const UserFormOuter = () => {
         });
 
         form.reset();
+
+        router.push("/users");
       },
       onError: (error) => {
         if (error.data?.code === "UNAUTHORIZED") {

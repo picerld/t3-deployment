@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { ForgotPasswordContainer } from "./ForgotPasswordContainer";
 
 type LoginFormInnerProps = {
   onLoginSubmit: (values: LoginFormSchema) => void;
@@ -24,7 +24,7 @@ export const LoginFormInner: React.FC<LoginFormInnerProps> = ({
 }) => {
   const form = useFormContext<LoginFormSchema>();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
     <form onSubmit={form.handleSubmit(onLoginSubmit)}>
@@ -78,11 +78,7 @@ export const LoginFormInner: React.FC<LoginFormInnerProps> = ({
           }}
         />
 
-        <div className="flex justify-end">
-          <Link href="/forgot-password" className="text-sm font-semibold">
-            Lupa Password?
-          </Link>
-        </div>
+        <ForgotPasswordContainer />
 
         <div className="w-full">
           <Button

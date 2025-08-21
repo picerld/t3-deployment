@@ -1,31 +1,33 @@
 "use client";
 
+import { Form } from "@/components/ui/form";
+import {
+  userPasswordFormSchema,
+  type UserPasswordFormSchema,
+} from "../forms/user-password";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trpc } from "@/utils/trpc";
 import { toast } from "sonner";
+import { UserPasswordUpdateFormInner } from "./UserPasswordUpdateFormInner";
 import { useEffect } from "react";
-import { Form } from "@/components/ui/form";
-import { userFormSchema, type UserFormSchema } from "../create/forms/user";
-import { UserUpdateFormInner } from "./UserUpdateFormInner";
 
-type UserUpdateFormOuterProps = {
+type UserPasswordUpdateFormOuterProps = {
   userId: string;
   open: boolean;
   onClose: () => void;
 };
 
-export const UserUpdateFormOuter = ({
+export const UserPasswordUpdateFormOuter = ({
   userId,
   open,
   onClose,
-}: UserUpdateFormOuterProps) => {
-  const form = useForm<UserFormSchema>({
-    resolver: zodResolver(userFormSchema),
+}: UserPasswordUpdateFormOuterProps) => {
+  const form = useForm<UserPasswordFormSchema>({
+    resolver: zodResolver(userPasswordFormSchema),
     defaultValues: {
       id: userId,
-      name: "",
-      username: "",
+      oldPassword: "",
       password: "",
     },
   });
@@ -35,10 +37,10 @@ export const UserUpdateFormOuter = ({
     { enabled: false },
   );
 
-  const updateUserMutation = trpc.users.update.useMutation({
+  const updatePasswordUserMutation = trpc.users.updatePassword.useMutation({
     onSuccess: () => {
       toast.success("Berhasil!!", {
-        description: "User berhasil diperbarui!",
+        description: "Password berhasil diperbarui!",
       });
 
       form.reset();
@@ -52,8 +54,8 @@ export const UserUpdateFormOuter = ({
           description: "Silahkan login terlebih dahulu",
         });
       } else {
-        toast.error("Kategori gagal diubah!!", {
-          description: "Coba periksa kembali form anda!",
+        toast.error("Password gagal diperbarui!!", {
+          description: error.message,
         });
       }
     },
@@ -65,35 +67,29 @@ export const UserUpdateFormOuter = ({
         if (res.data) {
           form.reset({
             id: res.data.id,
-            name: res.data.name || "",
-            username: res.data.username || "",
-            roleId: res.data.roleId,
+            password: "",
           });
         }
       });
     }
   }, [open, userId, refetch, form]);
 
-  function handleUpdateLocation(data: UserFormSchema) {
-    toast.info("Oops!! Mohon tunggu...", {
-      description: "Fitur ini sedang dalam maintenance",
+  function handleUpdatePassword(data: UserPasswordFormSchema) {
+    updatePasswordUserMutation.mutate({
+      id: data.id,
+      oldPassword: data.oldPassword,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
     });
-    // NOTE: CANNOT UPDATE FOR NOW
-    // updateUserMutation.mutate({
-    //   id: data.id,
-    //   name: data.name,
-    //   username: data.username,
-    //   roleId: data.roleId,
-    // });
   }
 
   return (
     <Form {...form}>
-      <UserUpdateFormInner
+      <UserPasswordUpdateFormInner
         open={open}
         onOpenChange={(state) => !state && onClose()}
-        isPending={updateUserMutation.isPending}
-        onLocationUpdateSubmit={handleUpdateLocation}
+        isPending={updatePasswordUserMutation.isPending}
+        onUserPasswordUpdateSubmit={handleUpdatePassword}
       />
     </Form>
   );

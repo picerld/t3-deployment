@@ -8,7 +8,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DataTablePagination } from "@/components/datatable/data-table-pagination";
 import useDebounce from "@/hooks/use-debounce";
 import type { User } from "@/types/user";
-import { UserUpdateFormOuter } from "../../update/UserUpdateFormOuter";
+import { UserUpdateFormOuter } from "../../update/components/UserUpdateFormOuter";
+import { UserPasswordUpdateFormOuter } from "../../update/components/UserPasswordUpdateFormOuter";
 
 export function UserDatatable() {
   const router = useRouter();
@@ -23,6 +24,17 @@ export function UserDatatable() {
   const debouncedSearch = useDebounce(search, 1000);
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedPasswordUser, setSelectedPasswordUser] = useState<User | null>(
+    null,
+  );
+
+  const handleEdit = (user: User) => {
+    setSelectedUser(user);
+  };
+
+  const handlePassword = (user: User) => {
+    setSelectedPasswordUser(user);
+  };
 
   const { data, isLoading } = trpc.users.getPaginated.useQuery(
     { page, perPage, search: debouncedSearch },
@@ -74,7 +86,7 @@ export function UserDatatable() {
     <div className="w-sm overflow-x-auto py-10 sm:w-full">
       <DataTable
         search={search}
-        columns={columns(setSelectedUser)}
+        columns={columns(handleEdit, handlePassword)}
         data={tableData}
         isLoading={isLoading}
         handleSearch={handleSearchChange}
@@ -94,6 +106,14 @@ export function UserDatatable() {
           userId={selectedUser.id}
           open={!!selectedUser}
           onClose={() => setSelectedUser(null)}
+        />
+      )}
+
+      {selectedPasswordUser && (
+        <UserPasswordUpdateFormOuter
+          userId={selectedPasswordUser.id}
+          open={!!selectedPasswordUser}
+          onClose={() => setSelectedPasswordUser(null)}
         />
       )}
     </div>

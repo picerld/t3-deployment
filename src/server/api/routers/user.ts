@@ -4,6 +4,7 @@ import z from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { userPasswordFormSchema } from "@/features/users/update/forms/user-password";
 
 export const userRouter = createTRPCRouter({
     getPaginated: publicProcedure
@@ -112,17 +113,40 @@ export const userRouter = createTRPCRouter({
 
     update: publicProcedure.input(userFormSchema)
     .mutation(async ({ ctx, input }) => {
-        const hashedPassword = await bcrypt.hash(input.password ?? "", 10);
         return ctx.db.user.update({
             where: { id: input.id },
             data: {
                 name: input.name,
                 username: input.username,
-                password: hashedPassword,
                 role: {
                     connect: { id: input.roleId },
                 }
             }
         });
+    }),
+
+  updatePassword: publicProcedure
+    .input(userPasswordFormSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const isValid = await bcrypt.compare(input.oldPassword, user.password!);
+      if (!isValid) {
+        throw new Error("Password lama salah");
+      }
+
+      // hash new password
+      const hashedPassword = await bcrypt.hash(input.password!, 10);
+
+      return ctx.db.user.update({
+        where: { id: input.id },
+        data: { password: hashedPassword },
+      });
     }),
 });
