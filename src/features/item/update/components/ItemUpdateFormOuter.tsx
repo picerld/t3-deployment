@@ -98,7 +98,12 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
           .from("segaris-image")
           .upload(filename, value.photo);
 
-        console.log("Upload result:", uploadResult);
+        if (uploadResult.error) {
+          toast.error("Oops! Gagal mengunggah foto", {
+            description: uploadResult.error.message,
+          });
+          return;
+        }
 
         const publicUrlResult = supabase.storage
           .from("segaris-image")
