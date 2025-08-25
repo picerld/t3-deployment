@@ -15,7 +15,7 @@ export default function ItemDetailPage({
 }) {
   return (
     <GuardedLayout>
-      <div className="flex justify-between gap-3">
+      <div className="flex flex-col justify-between gap-3 md:flex-row">
         <Link
           href="/items"
           className={buttonVariants({ variant: "default", className: "mb-5" })}

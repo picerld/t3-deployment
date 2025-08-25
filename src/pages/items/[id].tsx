@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <GuardedLayout>
-      <div className="flex justify-between">
+      <div className="flex justify-between md:flex-row flex-col">
         <Link
           href="/dashboard"
           className={buttonVariants({
@@ -28,7 +28,7 @@ export default function Page() {
           Kembali ke Dashboard
         </Link>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 sm:pb-0 pb-5">
           <PrintLabelContainer id={id} />
 
           <PrintSerahTerimaContainer itemId={id} />
