@@ -17,6 +17,10 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  images: {
+    remotePatterns: [new URL('https://bkvamhoryobkqozujdoe.supabase.co/storage/v1/object/public/segaris-image/**')],
+  }
 };
 
 export default config;

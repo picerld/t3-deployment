@@ -7,9 +7,12 @@ import { toast } from "sonner";
 import { ItemFormInner } from "./ItemFormInner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import supabase from "@/config/supabase";
 
 export const ItemFormOuter = () => {
   const router = useRouter();
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const form = useForm<ItemFormSchema>({
     resolver: zodResolver(itemFormSchema),
@@ -38,7 +41,7 @@ export const ItemFormOuter = () => {
         });
 
         form.reset();
-        
+
         window.scrollTo({
           top: 0,
           behavior: "smooth",
@@ -57,33 +60,70 @@ export const ItemFormOuter = () => {
       },
     });
 
+  // NOTE: USING UPLOAD FOLDER API
+  // async function handleItemSubmit(values: ItemFormSchema) {
+  //   let photoUrl: string | null = null;
+
+  //   if (values.photo instanceof File) {
+  //     const formData = new FormData();
+  //     formData.append("file", values.photo);
+
+  //     const uploadRes = await fetch("/api/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     if (!uploadRes.ok) {
+  //       toast.error("Gagal mengunggah foto");
+  //       return;
+  //     }
+
+  //     const data = await uploadRes.json();
+  //     photoUrl = data.url;
+  //   } else if (typeof values.photo === "string") {
+  //     photoUrl = values.photo;
+  //   }
+
+  //   createItem({
+  //     ...values,
+  //     photo: photoUrl,
+  //   });
+  // }
+
   async function handleItemSubmit(values: ItemFormSchema) {
-    let photoUrl: string | null = null;
+    try {
+      let photoUrl: string | null = null;
 
-    if (values.photo instanceof File) {
-      const formData = new FormData();
-      formData.append("file", values.photo);
+      if (selectedFile) {
+        const filename = `${Date.now()}-${selectedFile.name}`;
+        const uploadResult = await supabase.storage
+          .from("segaris-image")
+          .upload(filename, selectedFile);
 
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+        if (uploadResult.error) {
+          toast.error("Oops! Gagal mengunggah foto", {
+            description: uploadResult.error.message,
+          });
+          return;
+        }
 
-      if (!uploadRes.ok) {
-        toast.error("Gagal mengunggah foto");
-        return;
+        const publicUrlResult = supabase.storage
+          .from("segaris-image")
+          .getPublicUrl(filename);
+
+        photoUrl = publicUrlResult.data.publicUrl;
+
+        createItem({
+          ...values,
+          photo: photoUrl,
+        });
       }
-
-      const data = await uploadRes.json();
-      photoUrl = data.url;
-    } else if (typeof values.photo === "string") {
-      photoUrl = values.photo;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Terjadi kesalahan saat mengunggah foto.");
+    } finally {
+      setSelectedFile(null);
     }
-
-    createItem({
-      ...values,
-      photo: photoUrl,
-    });
   }
 
   return (
@@ -91,6 +131,7 @@ export const ItemFormOuter = () => {
       <ItemFormInner
         onItemSubmit={handleItemSubmit}
         isPending={createItemIsPending}
+        setSelectedFile={setSelectedFile}
       />
     </Form>
   );

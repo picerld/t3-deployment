@@ -23,11 +23,13 @@ import { PhotoUploadCard } from "./PhotoUploadCard";
 
 type ItemFormInnerProps = {
   isPending: boolean;
+  setSelectedFile?: React.Dispatch<React.SetStateAction<File | null>>;
   onItemSubmit: (value: ItemFormSchema) => void;
 };
 
 export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
   isPending,
+  setSelectedFile,
   onItemSubmit,
 }) => {
   const { data: categories, isLoading: categoriesIsLoading } =
@@ -44,7 +46,7 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
   return (
     <form onSubmit={form.handleSubmit(onItemSubmit)}>
       <div className="space-y-6">
-        <PhotoUploadCard />
+        <PhotoUploadCard setSelectedFile={setSelectedFile} />
 
         <div className="grid grid-cols-2 gap-10">
           <FormField

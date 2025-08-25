@@ -66,11 +66,7 @@ export const ItemGuestDetail = ({ id }: { id: string }) => {
           <div className="mb-6 rounded-lg border-2">
             {item?.photo ? (
               <Image
-                src={
-                  item.photo.startsWith("/uploads")
-                    ? item.photo
-                    : `/uploads/${item.photo}`
-                }
+                src={item.photo || "/images/placeholder-image.png"}
                 alt={`Foto ${item?.name ?? "Barang"}`}
                 width={800}
                 height={600}

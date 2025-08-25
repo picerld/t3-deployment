@@ -12,8 +12,10 @@ import { useFormContext } from "react-hook-form";
 
 export function PhotoUploadCard({
   label = "Foto Barang",
+  setSelectedFile,
 }: {
   readonly label?: string;
+  readonly setSelectedFile?: React.Dispatch<React.SetStateAction<File | null>>;
 }) {
   const { setValue, watch } = useFormContext();
   const currentFile = watch("photo") as File | undefined;
@@ -22,12 +24,18 @@ export function PhotoUploadCard({
   const handleFileChange = (file: File | undefined) => {
     if (file) {
       setValue("photo", file);
+      if (setSelectedFile) {
+        setSelectedFile(file);
+      }
       setPreview(URL.createObjectURL(file));
     }
   };
 
   const handleRemove = () => {
     setValue("photo", undefined);
+    if (setSelectedFile) {
+      setSelectedFile(null);
+    }
     setPreview(null);
   };
 
