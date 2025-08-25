@@ -221,6 +221,7 @@ export const itemRouter = createTRPCRouter({
     create: publicProcedure.input(itemFormSchema)
         .mutation(async ({ ctx, input }) => {
             let photoUrl: string | null = null;
+            
             if (input.photo instanceof File) {
                 const formData = new FormData();
                 formData.append("photo", input.photo);
@@ -310,6 +311,7 @@ export const itemRouter = createTRPCRouter({
             serialNumber: input.serialNumber,
             condition: input.condition,
             history: input.history,
+            photo: input.photo instanceof File ? undefined : input.photo,
             categoryId: input.categoryId ?? Number(input.categoryId),
             locationId: input.locationId ?? Number(input.locationId),
             userId: input.userId ?? Number(input.userId),

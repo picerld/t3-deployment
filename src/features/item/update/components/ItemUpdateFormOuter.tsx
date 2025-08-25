@@ -6,9 +6,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { itemFormSchema, type ItemFormSchema } from "../../create/forms/item";
 import { ItemUpdateFormInner } from "./ItemUpdateFormInner";
+import supabase from "@/config/supabase";
 
 type Props = {
   id: string;
@@ -16,6 +17,8 @@ type Props = {
 
 export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
   const router = useRouter();
+
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const { data: itemData, isLoading: isItemLoading } =
     trpc.items.getById.useQuery({ id });
@@ -73,16 +76,52 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
         locationId: itemData.locationId,
         userId: itemData.userId?.toString(),
       });
+
+      setPreviewImage(itemData.photo ?? null);
     }
   }, [itemData, form]);
 
-  function handleItemSubmit(value: ItemFormSchema) {
-    updateItem({ id, ...value });
+  async function handleItemSubmit(value: ItemFormSchema) {
+    try {
+      let photoUrl = itemData?.photo ?? null;
+
+      if (value.photo instanceof File) {
+        await supabase.storage
+          .from("segaris-image")
+          .remove([
+            photoUrl?.split("storage/v1/object/public/segaris-image/")[1] ?? "",
+          ]);
+
+        const filename = `${Date.now()}-${value.photo.name}`;
+
+        const uploadResult = await supabase.storage
+          .from("segaris-image")
+          .upload(filename, value.photo);
+
+        console.log("Upload result:", uploadResult);
+
+        const publicUrlResult = supabase.storage
+          .from("segaris-image")
+          .getPublicUrl(filename);
+
+        photoUrl = publicUrlResult.data.publicUrl;
+        console.log("Photo URL:", photoUrl);
+      }
+
+      updateItem({ id, ...value, photo: photoUrl });
+    } catch (error) {
+      toast.error("Terjadi kesalahan tak terduga. Coba lagi nanti.");
+      console.error(error);
+    } finally {
+      form.reset();
+      setPreviewImage(null);
+    }
   }
 
   return (
     <Form {...form}>
       <ItemUpdateFormInner
+        previewImage={previewImage}
         onItemSubmit={handleItemSubmit}
         isPending={updateItemIsPending || isItemLoading}
       />

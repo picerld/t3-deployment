@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -12,14 +12,20 @@ import { useFormContext } from "react-hook-form";
 
 export function PhotoUploadCard({
   label = "Foto Barang",
+  previewImage,
   setSelectedFile,
 }: {
   readonly label?: string;
+  readonly previewImage?: string | null;
   readonly setSelectedFile?: React.Dispatch<React.SetStateAction<File | null>>;
 }) {
   const { setValue, watch } = useFormContext();
   const currentFile = watch("photo") as File | undefined;
   const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPreview(previewImage ?? null);
+  }, [previewImage]);
 
   const handleFileChange = (file: File | undefined) => {
     if (file) {

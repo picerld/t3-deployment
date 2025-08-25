@@ -22,13 +22,15 @@ import type { ItemFormSchema } from "../../create/forms/item";
 import { PhotoUploadCard } from "../../create/components/PhotoUploadCard";
 
 type ItemUpdateFormInnerProps = {
-  onItemSubmit: (value: ItemFormSchema) => void;
   isPending: boolean;
+  previewImage: string | null;
+  onItemSubmit: (value: ItemFormSchema) => void;
 };
 
 export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
-  onItemSubmit,
   isPending,
+  previewImage,
+  onItemSubmit,
 }) => {
   const { data: categories, isLoading: categoriesIsLoading } =
     trpc.categories.getAll.useQuery();
@@ -47,6 +49,7 @@ export const ItemUpdateFormInner: React.FC<ItemUpdateFormInnerProps> = ({
     <form onSubmit={form.handleSubmit(onItemSubmit)}>
       <div className="grid grid-cols-1 gap-10 pt-5 md:grid-cols-2">
         <div className="space-y-6">
+          <PhotoUploadCard previewImage={previewImage} />
           <FormField
             control={form.control}
             name="name"

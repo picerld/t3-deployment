@@ -123,6 +123,7 @@ export const ItemFormOuter = () => {
       toast.error("Terjadi kesalahan saat mengunggah foto.");
     } finally {
       setSelectedFile(null);
+      form.reset();
     }
   }
 
