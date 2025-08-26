@@ -117,6 +117,11 @@ export const ItemFormOuter = () => {
           ...values,
           photo: photoUrl,
         });
+      } else {
+        createItem({
+          ...values,
+          photo: null,
+        });
       }
     } catch (error) {
       console.error("Error uploading file:", error);
