@@ -8,7 +8,7 @@ export const itemNameSchema = z
 export const itemMerkSchema = z
     .string()
     .min(2, { message: "Merk minimal 2 karakter" })
-    .max(20, { message: "Merk maksimal 20 karakter" });
+    .max(100, { message: "Merk maksimal 100 karakter" });
 
 export const itemCategoryIdSchema = z.coerce.number({
     message: "Pilih kategori!",
