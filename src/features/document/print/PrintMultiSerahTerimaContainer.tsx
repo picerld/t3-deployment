@@ -81,6 +81,12 @@ const serahTerimaFields: SerahTerimaField[] = [
     getValue: (item) => item?.location?.name || "",
     showInTable: false,
   },
+  {
+    key: "detail",
+    label: "Detail Speksifikasi",
+    getValue: (item) => item?.detail || "",
+    showInTable: false,
+  },
 ];
 
 export const PrintMultiSerahTerimaContainer = ({

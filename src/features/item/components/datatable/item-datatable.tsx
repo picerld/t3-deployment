@@ -90,6 +90,7 @@ export function ItemDatatable() {
   const tableData: Item[] = data.data.map((item) => ({
     ...item,
     photo: item.photo ?? undefined,
+    detail: item.detail ?? undefined,
     user: {
       ...item.user,
       username: item.user.username ?? undefined,

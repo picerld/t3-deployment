@@ -16,6 +16,7 @@ export type Item = {
     condition: string;
     photo?: string;
     history?: string;
+    detail?: string;
     category?: Category;
     location: Location;
     user?: User;
