@@ -117,16 +117,20 @@ export const ItemFormOuter = () => {
           ...values,
           photo: photoUrl,
         });
+
+        toast.success("Sukses!!", {
+          description: "Barang berhasil dicatatkan!",
+        });
       } else {
         createItem({
           ...values,
           photo: null,
         });
-      }
 
-      toast.success("Sukses!!", {
-        description: "Barang berhasil dicatatkan!",
-      });
+        toast.success("Sukses!!", {
+          description: "Barang berhasil dicatatkan!",
+        });
+      }
     } catch (error) {
       console.error("Error uploading file:", error);
       toast.error("Terjadi kesalahan saat mengunggah foto.");
