@@ -2,7 +2,7 @@ import z from "zod";
 
 export const itemNameSchema = z
     .string()
-    .min(3, { message: "Nama barang minimal 3 karakter" })
+    .min(1, { message: "Nama barang minimal 3 karakter" })
     .max(100, { message: "Nama barang maksimal 100 karakter" });
 
 export const itemMerkSchema = z

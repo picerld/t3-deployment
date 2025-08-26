@@ -112,25 +112,12 @@ export const ItemFormOuter = () => {
           .getPublicUrl(filename);
 
         photoUrl = publicUrlResult.data.publicUrl;
-
-        createItem({
-          ...values,
-          photo: photoUrl,
-        });
-
-        toast.success("Sukses!!", {
-          description: "Barang berhasil dicatatkan!",
-        });
-      } else {
-        createItem({
-          ...values,
-          photo: null,
-        });
-
-        toast.success("Sukses!!", {
-          description: "Barang berhasil dicatatkan!",
-        });
       }
+      
+      createItem({
+        ...values,
+        photo: photoUrl,
+      });
     } catch (error) {
       console.error("Error uploading file:", error);
       toast.error("Terjadi kesalahan saat mengunggah foto.");

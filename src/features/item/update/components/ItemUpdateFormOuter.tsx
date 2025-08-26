@@ -110,7 +110,6 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
           .getPublicUrl(filename);
 
         photoUrl = publicUrlResult.data.publicUrl;
-        console.log("Photo URL:", photoUrl);
       }
 
       updateItem({ id, ...value, photo: photoUrl });

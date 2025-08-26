@@ -20,6 +20,7 @@ import { trpc } from "@/utils/trpc";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { PhotoUploadCard } from "./PhotoUploadCard";
+import { FormCombobox } from "@/components/ui/form-combobox";
 
 type ItemFormInnerProps = {
   isPending: boolean;
@@ -40,6 +41,27 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
 
   const { data: locations, isLoading: locationIsLoading } =
     trpc.locations.getAll.useQuery();
+
+  const categoriesArray = [
+    ...(categories ?? []).map((category) => ({
+      label: category.name,
+      value: category.id.toString(),
+    })),
+  ];
+
+  const usersArray = [
+    ...(users ?? []).map((user) => ({
+      label: `${user.name}`,
+      value: user.id.toString(),
+    })),
+  ];
+
+  const locationsArray = [
+    ...(locations ?? []).map((location) => ({
+      label: location.name,
+      value: location.id.toString(),
+    })),
+  ];
 
   const form = useFormContext<ItemFormSchema>();
 
@@ -106,34 +128,18 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
                   Kategori Barang
                 </FormLabel>
                 <FormControl>
-                  <Select
+                  <FormCombobox
                     value={field.value?.toString()}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value?.toString()}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih kategori" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categoriesIsLoading ? (
-                        <p>Loading...</p>
-                      ) : (
-                        categories?.map((category) => (
-                          <SelectItem
-                            key={category.id}
-                            value={category.id.toString()}
-                          >
-                            {category.name}
-                          </SelectItem>
-                        ))
-                      )}
-                    </SelectContent>
-                  </Select>
+                    onChange={field.onChange}
+                    options={categoriesArray}
+                    placeholder="Pilih kategori"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="color"
@@ -254,28 +260,12 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
               <FormItem>
                 <FormLabel className="flex font-bold">Ruangan</FormLabel>
                 <FormControl>
-                  <Select
+                  <FormCombobox
                     value={field.value?.toString()}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih ruangan" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {locationIsLoading ? (
-                        <p>Loading...</p>
-                      ) : (
-                        locations?.map((location) => (
-                          <SelectItem
-                            key={location.id}
-                            value={location.id.toString()}
-                          >
-                            {location.name}
-                          </SelectItem>
-                        ))
-                      )}
-                    </SelectContent>
-                  </Select>
+                    onChange={field.onChange}
+                    options={locationsArray}
+                    placeholder="Pilih ruangan"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -290,25 +280,12 @@ export const ItemFormInner: React.FC<ItemFormInnerProps> = ({
             <FormItem>
               <FormLabel className="flex font-bold">Penanggung Jawab</FormLabel>
               <FormControl>
-                <Select
+                <FormCombobox
                   value={field.value?.toString()}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih penanggung jawab" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {usersIsLoading ? (
-                      <p>Loading...</p>
-                    ) : (
-                      users?.map((user) => (
-                        <SelectItem key={user.id} value={user.id.toString()}>
-                          {user.name ?? user.username}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
+                  onChange={field.onChange}
+                  options={usersArray}
+                  placeholder="Pilih penanggung jawab"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
