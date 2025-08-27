@@ -98,7 +98,6 @@ model Item {
   user           User          @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Restrict)
   location       Location      @relation(fields: [locationId], references: [id], onUpdate: Cascade, onDelete: Restrict)
 
-  @@unique([serialNumber])
   @@index([categoryId])
   @@index([userId])
   @@index([locationId])

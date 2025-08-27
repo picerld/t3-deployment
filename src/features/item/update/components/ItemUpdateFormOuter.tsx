@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { itemFormSchema, type ItemFormSchema } from "../../create/forms/item";
 import { ItemUpdateFormInner } from "./ItemUpdateFormInner";
 import supabase from "@/config/supabase";
+import { OnLoadItem } from "@/components/dialog/OnLoadItem";
 
 type Props = {
   id: string;
@@ -19,6 +20,11 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
   const router = useRouter();
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogStatus, setDialogStatus] = useState<
+    "loading" | "success" | null
+  >(null);
 
   const { data: itemData, isLoading: isItemLoading } =
     trpc.items.getById.useQuery({ id });
@@ -43,6 +49,19 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
         }
       },
     });
+
+  useEffect(() => {
+    if (isItemLoading) {
+      setDialogStatus("loading");
+      setShowDialog(true);
+    } else if (itemData) {
+      setDialogStatus("success");
+      setShowDialog(true);
+
+      const timer = setTimeout(() => setShowDialog(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isItemLoading, itemData]);
 
   const form = useForm<ItemFormSchema>({
     resolver: zodResolver(itemFormSchema),
@@ -123,12 +142,16 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
   }
 
   return (
-    <Form {...form}>
-      <ItemUpdateFormInner
-        previewImage={previewImage}
-        onItemSubmit={handleItemSubmit}
-        isPending={updateItemIsPending || isItemLoading}
-      />
-    </Form>
+    <>
+      <Form {...form}>
+        <ItemUpdateFormInner
+          previewImage={previewImage}
+          onItemSubmit={handleItemSubmit}
+          isPending={updateItemIsPending || isItemLoading}
+        />
+      </Form>
+
+      {showDialog && <OnLoadItem isLoading={dialogStatus === "loading"} />}
+    </>
   );
 };
