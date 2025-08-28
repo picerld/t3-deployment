@@ -84,8 +84,9 @@ export const itemRouter = createTRPCRouter({
     ...(user
         ? {
             user: {
-                id: {
-                    equals: user,
+            name: {
+                    contains: user,
+                    mode: "insensitive",
                 },
             },
         }

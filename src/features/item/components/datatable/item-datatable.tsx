@@ -20,6 +20,7 @@ export function ItemDatatable() {
   const [category, setCategory] = useState<string>("");
   const [owner, setOwner] = useState<string>("");
   const [condition, setCondition] = useState<string>("");
+  const [pic, setPic] = useState<string>("");
 
   useEffect(() => {
     setPage(Number(searchParams.get("page")) || 1);
@@ -28,6 +29,7 @@ export function ItemDatatable() {
     setCategory(searchParams.get("category") ?? "");
     setOwner(searchParams.get("owner") ?? "");
     setCondition(searchParams.get("condition") ?? "");
+    setPic(searchParams.get("pic") ?? "");
   }, [searchParams]);
 
   const debouncedSearch = useDebounce(search, 800);
@@ -68,13 +70,27 @@ export function ItemDatatable() {
       params.delete("condition");
     }
 
+    if (pic) {
+      params.set("pic", pic);
+    } else {
+      params.delete("pic");
+    }
+
     params.set("perPage", String(perPage));
 
     router.replace(`${pathName}?${params.toString()}`);
   }, [debouncedSearch, category, perPage, owner, condition]);
 
   const { data, isLoading } = trpc.items.getPaginated.useQuery(
-    { page, perPage, search: debouncedSearch, category, owner, condition },
+    {
+      page,
+      perPage,
+      search: debouncedSearch,
+      category,
+      owner,
+      condition,
+      user: pic,
+    },
     {
       refetchOnWindowFocus: false,
       placeholderData: (previousData) => previousData,
@@ -101,6 +117,20 @@ export function ItemDatatable() {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+  };
+
+  const handleSearchPic = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPic(e.target.value);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (e.target.value) {
+      params.set("pic", e.target.value);
+    } else {
+      params.delete("pic");
+    }
+
+    router.replace(`${pathName}?${params.toString()}`);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -141,10 +171,12 @@ export function ItemDatatable() {
       <DataTable
         data={tableData}
         search={search}
+        pic={pic}
         category={category}
         condition={condition}
         owner={owner}
         isLoading={isLoading}
+        handleSearchPic={handleSearchPic}
         handleSearch={handleSearchChange}
         handleOwnerChange={handleOwnerChange}
         handleCategoryChange={handleCategoryChange}

@@ -40,10 +40,12 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   search: string;
+  pic: string;
   category: string;
   condition: string;
   owner: string;
   isLoading: boolean;
+  handleSearchPic: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCategoryChange: (category: string) => void;
   handleOwnerChange: (owner: string) => void;
@@ -54,11 +56,13 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   search,
+  pic,
   category,
   condition,
   owner,
   isLoading,
   handleSearch,
+  handleSearchPic,
   handleOwnerChange,
   handleCategoryChange,
   handleConditionChange,
@@ -94,12 +98,20 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <div className="flex flex-col items-center justify-between gap-4 pb-5 sm:flex-row">
-        <Input
-          placeholder="Cari barang kamu..."
-          value={search}
-          onChange={handleSearch}
-          className="w-full sm:max-w-xs"
-        />
+        <div className="flex gap-3">
+          <Input
+            placeholder="Cari barang kamu..."
+            value={search}
+            onChange={handleSearch}
+            className="w-full sm:max-w-xs"
+          />
+          <Input
+            placeholder="Cari nama pic..."
+            value={pic}
+            onChange={handleSearchPic}
+            className="w-full sm:max-w-xs bg-main placeholder:text-black"
+          />
+        </div>
         <div className="flex justify-end gap-2">
           <Select value={condition} onValueChange={handleConditionChange}>
             <SelectTrigger>

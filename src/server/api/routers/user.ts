@@ -61,6 +61,14 @@ export const userRouter = createTRPCRouter({
     return ctx.db.user.count();
   }),
 
+  getUserWithAccount: publicProcedure.query(({ ctx }) => {
+    return ctx.db.user.count({
+      where: {
+        username: { not: null }
+      },
+    });
+  }),
+
   getUserWithoutAccount: publicProcedure.query(({ ctx }) => {
     return ctx.db.user.count({
       where: {

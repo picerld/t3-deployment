@@ -8,7 +8,7 @@ export const DashboardStatsCard = () => {
     trpc.items.getCount.useQuery(undefined, {});
 
   const { data: users, isLoading: isLoadingUsers } =
-    trpc.users.getCount.useQuery(undefined, {});
+    trpc.users.getUserWithAccount.useQuery(undefined, {});
 
   const { data: guest, isLoading: isLoadingGuest } =
     trpc.users.getUserWithoutAccount.useQuery(undefined, {});
@@ -24,7 +24,7 @@ export const DashboardStatsCard = () => {
 
       <div className="flex gap-3 pt-5 sm:pt-0">
         <Card className="w-1/2 sm:w-[250px]">
-          <CardTitle className="px-5 text-xl">Akun Aktif</CardTitle>
+          <CardTitle className="px-5 text-xl">User dengan Akun</CardTitle>
           <CardContent className="text-lg">
             {isLoadingUsers ? "Loading..." : users}
           </CardContent>
