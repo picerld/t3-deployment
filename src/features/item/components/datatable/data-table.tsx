@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
             className="w-full sm:max-w-xs"
           />
           <Input
-            placeholder="Cari nama pic..."
+            placeholder="Cari nama pic..." 
             value={pic}
             onChange={handleSearchPic}
             className="w-full sm:max-w-xs bg-main placeholder:text-black"
