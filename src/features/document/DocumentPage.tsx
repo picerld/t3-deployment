@@ -20,6 +20,7 @@ import { trpc } from "@/utils/trpc";
 import { MultiPrintItemCard } from "./components/MultiPrintItemCard";
 import { PrintMultiSerahTerimaContainer } from "./print/PrintMultiSerahTerimaContainer";
 import { Header } from "@/components/container/Header";
+import { DocumentItemPagination } from "./components/DocumentItemPagination";
 
 export default function DocumentPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -193,45 +194,11 @@ export default function DocumentPage() {
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-center space-x-2 pt-10">
-                <Button
-                  variant="neutral"
-                  size="sm"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(1, prev - 1))
-                  }
-                  disabled={currentPage === 1}
-                >
-                  Sebelumnya
-                </Button>
-
-                <div className="flex items-center space-x-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <Button
-                        key={page}
-                        variant={currentPage === page ? "default" : "neutral"}
-                        size="sm"
-                        onClick={() => setCurrentPage(page)}
-                        className="w-10"
-                      >
-                        {page}
-                      </Button>
-                    ),
-                  )}
-                </div>
-
-                <Button
-                  variant="neutral"
-                  size="sm"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                >
-                  Selanjutnya
-                </Button>
-              </div>
+              <DocumentItemPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={setCurrentPage}
+              />
             )}
           </>
         )}
