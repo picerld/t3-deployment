@@ -117,11 +117,14 @@ export default function DocumentPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Semua Penanggung Jawab</SelectItem>
-                    {penanggungJawabList?.map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
-                        {user.name}
-                      </SelectItem>
-                    ))}
+                    {penanggungJawabList
+                      ?.slice()
+                      .sort((a, b) => a.name!.localeCompare(b.name!))
+                      .map((user) => (
+                        <SelectItem key={user.id} value={user.id.toString()}>
+                          {user.name}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </div>
