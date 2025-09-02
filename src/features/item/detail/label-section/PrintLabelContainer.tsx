@@ -64,6 +64,16 @@ const printFields: PrintField[] = [
     getValue: (item) => item?.user?.name || "",
   },
   {
+    key: "detail",
+    label: "Detail",
+    getValue: (item) => item?.detail || "",
+  },
+  {
+    key: "history",
+    label: "Riwayat/Spesifikasi Barang",
+    getValue: (item) => item?.history || "",
+  },
+  {
     key: "description",
     label: "Keterangan",
     getValue: (item) => item?.description || "",
