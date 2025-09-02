@@ -34,7 +34,7 @@ export default function DocumentPage() {
       search: searchTerm,
       page: currentPage,
       perPage: itemsPerPage,
-      user:
+      userId:
         selectedPenanggungJawab === "all" ? undefined : selectedPenanggungJawab,
     });
 

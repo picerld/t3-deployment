@@ -89,7 +89,7 @@ export function ItemDatatable() {
       category,
       owner,
       condition,
-      user: pic,
+      userName: pic,
     },
     {
       refetchOnWindowFocus: false,

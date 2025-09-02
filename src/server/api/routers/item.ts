@@ -41,12 +41,13 @@ export const itemRouter = createTRPCRouter({
         category: z.string().optional().default(""),
         owner: z.string().optional().default(""),
         condition: z.string().optional().default(""),
-        user: z.string().optional().default(""),
+        userName: z.string().optional().default(""),
+        userId: z.string().optional().default(""),
         })
     )
     .query(async ({ ctx, input }) => {
         const start = performance.now();
-        const { page, perPage, search, category, owner, condition, user } = input;
+        const { page, perPage, search, category, owner, condition, userName, userId } = input;
 
     const where: import("@prisma/client").Prisma.ItemWhereInput = {
     ...(search
@@ -81,13 +82,20 @@ export const itemRouter = createTRPCRouter({
             },
         }
         : {}),
-    ...(user
+    ...(userName
         ? {
             user: {
             name: {
-                    contains: user,
+                    contains: userName,
                     mode: "insensitive",
                 },
+            },
+        }
+        : {}),
+    ...(userId
+        ? {
+            user: {
+                id: userId,
             },
         }
         : {}),
