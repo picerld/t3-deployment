@@ -27,7 +27,7 @@ import {
 
 const chartConfig = {
   items: {
-    label: "Barang Tercatat",
+    label: "Barang Tercatat: '",
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig;

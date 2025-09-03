@@ -1,4 +1,4 @@
-import { Menu, Search } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import { ModeToggle } from "../ui/mode-toggle";
 import Link from "next/link";
@@ -17,6 +17,7 @@ import {
 import React from "react";
 import { skipToken } from "@tanstack/react-query";
 import GlobalSearch from "./GlobalSearch";
+import { LogoutButton } from "./LogoutButton";
 
 export default function GuardedLayout({
   children,
@@ -163,14 +164,7 @@ export default function GuardedLayout({
             <div className="flex items-center space-x-4">
               <GlobalSearch />
               <ModeToggle />
-              <Button
-                onClick={handleLogout}
-                variant={"neutral"}
-                className="px-5"
-                disabled={logoutMutation.isPending}
-              >
-                {logoutMutation.isPending ? "Logging out..." : "Logout"}
-              </Button>
+              <LogoutButton />
             </div>
           </div>
         </div>
