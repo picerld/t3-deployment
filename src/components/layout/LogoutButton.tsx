@@ -54,7 +54,7 @@ export const LogoutButton = () => {
       <AlertDialogTrigger asChild>
         <Button disabled={logoutMutation.isPending} variant={"neutral"}>
           {logoutMutation.isPending ? (
-            <div className="flex">
+            <div className="flex items-center">
               <Loader className="mr-2 animate-spin" />
               Tunggu...
             </div>
