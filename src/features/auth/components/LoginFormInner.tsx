@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { useState } from "react";
 import { ForgotPasswordContainer } from "./ForgotPasswordContainer";
 
@@ -86,7 +86,14 @@ export const LoginFormInner: React.FC<LoginFormInnerProps> = ({
             className="w-full py-6 text-base"
             disabled={isPending}
           >
-            {isPending ? "Login..." : "Masuk Sekarang!"}
+            {isPending ? (
+              <div className="flex items-center">
+                <Loader className="mr-2 h-6 w-6 animate-spin" />
+                Memproses
+              </div>
+            ) : (
+              "Masuk Sekarang!"
+            )}
           </Button>
         </div>
       </div>

@@ -39,7 +39,7 @@ export const LoginFormOuter = () => {
         setTimeout(() => {
           router.push("/dashboard");
         }, 800);
-        
+
         form.reset();
       },
       onError: () => {
@@ -51,6 +51,11 @@ export const LoginFormOuter = () => {
     });
 
   const handleLogin = (values: LoginFormSchema) => {
+    if (values.username === "") {
+      form.setError("username", { message: "Invalid username" });
+      return;
+    }
+
     loginUser(values);
   };
 
