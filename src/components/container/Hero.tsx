@@ -3,12 +3,13 @@
 import { motion } from "motion/react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function Hero() {
   return (
     <div className="mx-auto my-10 flex max-w-7xl flex-col items-center justify-center pt-28">
       <div className="flex flex-col items-center px-4 py-10 md:py-20">
-        <Badge className="my-5">Hola Mundo 👋</Badge>
+        <Badge className="my-5 text-sm">Hello All 👋</Badge>
         <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold md:text-4xl lg:text-7xl">
           {"Segaris Deployment".split(" ").map((word, index) => (
             <motion.span
@@ -53,11 +54,13 @@ export default function Hero() {
             duration: 0.3,
             delay: 1,
           }}
-          className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
+          className="relative z-10 mt-4 flex flex-wrap items-center justify-center gap-4"
         >
-          <Button size="lg" className="text-base w-full">
-            Login Sekarang!
-          </Button>
+          <Link href="/login">
+            <Button size="lg" className="w-full text-base">
+              Login Sekarang!
+            </Button>
+          </Link>
         </motion.div>
         <motion.div
           initial={{

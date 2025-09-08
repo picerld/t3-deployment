@@ -6,8 +6,8 @@ export const HeadMetaData: React.FC<{
   metaDescription?: string;
   ogImageUrl?: string;
   pathName?: string;
-}> = ({ title = "Inventory", metaDescription, ogImageUrl, pathName = "" }) => {
-  const defaultTitle = "Inventory";
+}> = ({ title = "Deployment App", metaDescription, ogImageUrl, pathName = "" }) => {
+  const defaultTitle = "Deployment App";
 
   const baseUrl = "https://localhost:3000";
 
