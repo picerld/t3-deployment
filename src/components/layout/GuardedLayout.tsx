@@ -155,7 +155,7 @@ export default function GuardedLayout({
               <div className="hidden items-center space-x-2 lg:flex">
                 <Link href={"/"}>
                   <h1 className="text-2xl font-bold text-black dark:text-white">
-                    Inventory
+                    Deployment
                   </h1>
                 </Link>
               </div>

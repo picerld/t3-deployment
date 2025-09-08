@@ -210,19 +210,6 @@ export const PrintMultiSerahTerimaContainer = ({
                 />
               </div>
               <div>
-                <Label htmlFor="reviewer">Yang Mengetahui</Label>
-                <Input
-                  id="reviewer"
-                  value={documentInfo.reviewer}
-                  onChange={(e) =>
-                    setDocumentInfo((prev) => ({
-                      ...prev,
-                      reviewer: e.target.value,
-                    }))
-                  }
-                />
-              </div>
-              <div>
                 <Label htmlFor="receiver">Yang Menerima</Label>
                 <Input
                   id="receiver"
@@ -420,7 +407,7 @@ export const PrintMultiSerahTerimaContainer = ({
                     <div className="space-y-6">
                       <p className="text-sm">{getCurrentDate()}</p>
 
-                      <div className="grid grid-cols-3 gap-8">
+                      <div className="grid grid-cols-2 gap-8">
                         <div className="space-y-16 text-center">
                           <p className="text-sm font-medium">
                             Yang Menyerahkan,
@@ -429,18 +416,6 @@ export const PrintMultiSerahTerimaContainer = ({
                             <div className="h-12 border-b border-gray-400"></div>
                             <p className="text-sm font-medium">
                               {documentInfo.submitter}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="space-y-16 text-center">
-                          <p className="text-sm font-medium">
-                            Yang Mengetahui,
-                          </p>
-                          <div className="space-y-2">
-                            <div className="h-12 border-b border-gray-400"></div>
-                            <p className="text-sm font-medium">
-                              {documentInfo.reviewer}
                             </p>
                           </div>
                         </div>

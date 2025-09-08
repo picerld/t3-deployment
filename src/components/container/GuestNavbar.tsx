@@ -42,7 +42,7 @@ export default function GuestNavbar() {
   }));
 
   return (
-    <header className="bg-background dark:bg-secondary-background shadow-shadow fixed w-full px-10 py-5">
+    <header className="bg-background dark:bg-secondary-background shadow-shadow fixed w-full px-10 py-5 z-20">
       <div className="container mx-auto flex items-center justify-between sm:px-32">
         <nav className="flex w-full items-center justify-start gap-6">
           {updatedNavItem.map((item) => (

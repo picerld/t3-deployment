@@ -8,7 +8,6 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       style={{ fontFamily: "inherit", overflowWrap: "anywhere" }}
-      richColors
       position="top-right"
       toastOptions={{
         unstyled: true,

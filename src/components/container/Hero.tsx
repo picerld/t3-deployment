@@ -1,39 +1,90 @@
-import React from "react";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+"use client";
 
-const Hero = () => {
+import { motion } from "motion/react";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+
+export default function Hero() {
   return (
-    <div className="w-full bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] bg-[size:60px_60px]">
-      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-10 px-6 py-16">
-        <div className="max-w-2xl text-center">
-          <Badge>Hola Mundo 👋</Badge>
-          <h1 className="mt-6 text-7xl font-bold !leading-[1.2] tracking-tight lg:text-7xl md:text-7xl">
-            Segaris Inventory
-          </h1>
-          <p className="mt-6 text-base sm:text-lg">
-            Memudahkan kamu dalam mengelola inventaris barang. <br /> Ayo mulai
-            sekarang!
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-            <Link href={"#features"} className="flex items-center gap-1">
-              <Button size="lg" className="text-base">
-                Get Started
-              </Button>
-            </Link>
-            <Button
-              variant="neutral"
-              size="lg"
-              className="text-base shadow-none"
+    <div className="mx-auto my-10 flex max-w-7xl flex-col items-center justify-center pt-28">
+      <div className="flex flex-col items-center px-4 py-10 md:py-20">
+        <Badge className="my-5">Hola Mundo 👋</Badge>
+        <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold md:text-4xl lg:text-7xl">
+          {"Segaris Deployment".split(" ").map((word, index) => (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              transition={{
+                duration: 0.3,
+                delay: index * 0.1,
+                ease: "easeInOut",
+              }}
+              className="mr-2 inline-block"
             >
-              Login Sekarang!
-            </Button>
+              {word}
+            </motion.span>
+          ))}
+        </h1>
+        <motion.p
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          transition={{
+            duration: 0.3,
+            delay: 0.8,
+          }}
+          className="relative z-10 mx-auto max-w-xl py-6 text-center text-lg font-normal"
+        >
+          Memudahkan kamu dalam mengelola deployment barang. <br /> Ayo mulai
+          sekarang!
+        </motion.p>
+        <motion.div
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          transition={{
+            duration: 0.3,
+            delay: 1,
+          }}
+          className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
+        >
+          <Button size="lg" className="text-base w-full">
+            Login Sekarang!
+          </Button>
+        </motion.div>
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 10,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.3,
+            delay: 1.2,
+          }}
+          className="relative z-10 mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-900"
+        >
+          <div className="w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
+            <img
+              src="https://assets.aceternity.com/pro/aceternity-landing.webp"
+              alt="Landing page preview"
+              className="aspect-[16/9] h-auto w-full object-cover"
+              height={1000}
+              width={1000}
+            />
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
-};
-
-export default Hero;
+}
