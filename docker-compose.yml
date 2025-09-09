@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_deployment
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_segaris_deployment
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: t3-deployment-nextjs
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/db_segaris_deployment
+      NODE_ENV: development
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "3101:3101"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: []
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_deployment
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com   # login email
+      PGADMIN_DEFAULT_PASSWORD: admin          # login password
+    ports:
+      - "5051:80"  # access pgAdmin at http://localhost:5051
+    depends_on:
+      - db
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  db-data:
+  pgadmin-data:

@@ -1,5 +1,17 @@
 # Create T3 App
 
+change env to local DB
+
+comment the *DIRECT_URL* in schema
+
+Run docker-compose up --build
+
+then access the terminal 
+
+`docker compose run --rm --entrypoint sh app`
+
+`npx prisma migrate dev && npx prisma db push`
+
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
 ## What's next? How do I make an app with this?
