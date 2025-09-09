@@ -19,8 +19,6 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:password@db:5432/db_segaris_deployment
       NODE_ENV: development
-    env_file:
-      - .env
     depends_on:
       - db
     ports:
