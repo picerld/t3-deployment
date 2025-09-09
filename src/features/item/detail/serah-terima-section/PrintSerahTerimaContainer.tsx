@@ -119,7 +119,6 @@ export const PrintSerahTerimaContainer = ({
   const [documentInfo, setDocumentInfo] = useState({
     number: documentNumber || `000/XX/SGRS/XXXX/${new Date().getFullYear()}`,
     submitter: "Syarif Hidayat",
-    reviewer: "Tanty Chris Tanty",
     receiver: "",
   });
 
@@ -440,7 +439,7 @@ export const PrintSerahTerimaContainer = ({
                       <div className="space-y-6">
                         <p className="text-sm">{getCurrentDate()}</p>
 
-                        <div className="grid grid-cols-2 gap-8">
+                        <div className="grid grid-cols-3 gap-8">
                           <div className="space-y-16 text-center">
                             <p className="text-sm font-medium">
                               Yang Menyerahkan,

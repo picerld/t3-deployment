@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
     <>
       <div className="flex items-center pb-5">
         <Input
-          placeholder="Cari kategori kamu..."
+          placeholder="Cari nama atau username kamu..."
           value={search}
           onChange={handleSearch}
           className="max-w-xs"

@@ -1,13 +1,13 @@
 import { userFormSchema } from "@/features/users/create/forms/user";
 import bcrypt from "bcrypt";
 import z from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { userPasswordFormSchema } from "@/features/users/update/forms/user-password";
 
 export const userRouter = createTRPCRouter({
-    getPaginated: publicProcedure
+    getPaginated: protectedProcedure
     .input(
         z.object({
         page: z.number().min(1).default(1),

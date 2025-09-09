@@ -9,7 +9,7 @@ export default function Hero() {
   return (
     <div className="mx-auto my-10 flex max-w-7xl flex-col items-center justify-center pt-28">
       <div className="flex flex-col items-center px-4 py-10 md:py-20">
-        <Badge className="my-5 text-sm">Hello All 👋</Badge>
+        <Badge className="my-5 text-sm">Hola Mundo 👋</Badge>
         <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold md:text-4xl lg:text-7xl">
           {"Segaris Deployment".split(" ").map((word, index) => (
             <motion.span

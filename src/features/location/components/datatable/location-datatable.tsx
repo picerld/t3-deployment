@@ -15,11 +15,16 @@ export function LocationDatatable() {
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
-  const page = Number(searchParams.get("page")) || 1;
-  const perPage = Number(searchParams.get("perPage")) || 5;
-  const searchFromUrl = searchParams.get("search") ?? "";
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(5);
+  const [search, setSearch] = useState<string>("");
 
-  const [search, setSearch] = useState(searchFromUrl);
+  React.useEffect(() => {
+    setPage(Number(searchParams.get("page")) || 1);
+    setPerPage(Number(searchParams.get("perPage")) || 5);
+    setSearch(searchParams.get("search") ?? "");
+  }, [searchParams]);
+
   const debouncedSearch = useDebounce(search, 1000);
 
   const [selectedLocation, setselectedLocation] = useState<Location | null>(

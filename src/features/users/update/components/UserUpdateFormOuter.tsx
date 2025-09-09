@@ -75,16 +75,12 @@ export const UserUpdateFormOuter = ({
   }, [open, userId, refetch, form]);
 
   function handleUpdateLocation(data: UserFormSchema) {
-    toast.info("Oops!! Mohon tunggu...", {
-      description: "Fitur ini sedang dalam maintenance",
+    updateUserMutation.mutate({
+      id: data.id,
+      name: data.name,
+      username: data.username,
+      roleId: data.roleId,
     });
-    // NOTE: CANNOT UPDATE FOR NOW
-    // updateUserMutation.mutate({
-    //   id: data.id,
-    //   name: data.name,
-    //   username: data.username,
-    //   roleId: data.roleId,
-    // });
   }
 
   return (

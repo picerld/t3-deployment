@@ -8,6 +8,8 @@ export type User = {
         id?: number;
         name: string;
     };
+    token?: string | null;
+    tokenExpiresAt?: Date | null;
     createdAt?: Date;
     updatedAt?: Date;
 }

@@ -4,7 +4,7 @@ import { type Category } from "@/types/category";
 import { columns } from "./column";
 import { DataTable } from "./data-table";
 import { trpc } from "@/utils/trpc";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DataTablePagination } from "@/components/datatable/data-table-pagination";
 import useDebounce from "@/hooks/use-debounce";
@@ -15,11 +15,16 @@ export function CategoryDatatable() {
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
-  const page = Number(searchParams.get("page")) || 1;
-  const perPage = Number(searchParams.get("perPage")) || 5;
-  const searchFromUrl = searchParams.get("search") ?? "";
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(5);
+  const [search, setSearch] = useState<string>("");
 
-  const [search, setSearch] = useState(searchFromUrl);
+  useEffect(() => {
+    setPage(Number(searchParams.get("page")) || 1);
+    setPerPage(Number(searchParams.get("perPage")) || 5);
+    setSearch(searchParams.get("search") ?? "");
+  }, [searchParams]);
+
   const debouncedSearch = useDebounce(search, 1000);
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(

@@ -97,7 +97,7 @@ export const ItemFormOuter = () => {
       if (selectedFile) {
         const filename = `${Date.now()}-${selectedFile.name}`;
         const uploadResult = await supabase.storage
-          .from("segaris-deployment-image")
+          .from("segaris-image")
           .upload(filename, selectedFile);
 
         if (uploadResult.error) {
@@ -108,7 +108,7 @@ export const ItemFormOuter = () => {
         }
 
         const publicUrlResult = supabase.storage
-          .from("segaris-deployment-image")
+          .from("segaris-image")
           .getPublicUrl(filename);
 
         photoUrl = publicUrlResult.data.publicUrl;

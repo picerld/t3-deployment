@@ -10,17 +10,23 @@ import useDebounce from "@/hooks/use-debounce";
 import type { User } from "@/types/user";
 import { UserUpdateFormOuter } from "../../update/components/UserUpdateFormOuter";
 import { UserPasswordUpdateFormOuter } from "../../update/components/UserPasswordUpdateFormOuter";
+import { handleTrpcErroruNauthorized } from "@/utils/handleTRPCErrorUnauthorized";
 
 export function UserDatatable() {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
-  const page = Number(searchParams.get("page")) || 1;
-  const perPage = Number(searchParams.get("perPage")) || 5;
-  const searchFromUrl = searchParams.get("search") ?? "";
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(5);
+  const [search, setSearch] = useState<string>("");
 
-  const [search, setSearch] = useState(searchFromUrl);
+  React.useEffect(() => {
+    setPage(Number(searchParams.get("page")) || 1);
+    setPerPage(Number(searchParams.get("perPage")) || 5);
+    setSearch(searchParams.get("search") ?? "");
+  }, [searchParams]);
+
   const debouncedSearch = useDebounce(search, 1000);
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -36,7 +42,7 @@ export function UserDatatable() {
     setSelectedPasswordUser(user);
   };
 
-  const { data, isLoading } = trpc.users.getPaginated.useQuery(
+  const { data, isLoading, error } = trpc.users.getPaginated.useQuery(
     { page, perPage, search: debouncedSearch },
     {
       refetchOnWindowFocus: false,
@@ -47,6 +53,8 @@ export function UserDatatable() {
   if (isLoading) {
     return <div className="py-4">Mohon tunggu sebentar ya...</div>;
   }
+
+  if (error) handleTrpcErroruNauthorized(error);
 
   if (!data) return <div>No data</div>;
 

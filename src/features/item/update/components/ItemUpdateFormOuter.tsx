@@ -106,15 +106,15 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
 
       if (value.photo instanceof File) {
         await supabase.storage
-          .from("segaris-deployment-image")
+          .from("segaris-image")
           .remove([
-            photoUrl?.split("storage/v1/object/public/segaris-deployment-image/")[1] ?? "",
+            photoUrl?.split("storage/v1/object/public/segaris-image/")[1] ?? "",
           ]);
 
         const filename = `${Date.now()}-${value.photo.name}`;
 
         const uploadResult = await supabase.storage
-          .from("segaris-deployment-image")
+          .from("segaris-image")
           .upload(filename, value.photo);
 
         if (uploadResult.error) {
@@ -125,7 +125,7 @@ export const ItemFormOuterUpdate: React.FC<Props> = ({ id }) => {
         }
 
         const publicUrlResult = supabase.storage
-          .from("segaris-deployment-image")
+          .from("segaris-image")
           .getPublicUrl(filename);
 
         photoUrl = publicUrlResult.data.publicUrl;
