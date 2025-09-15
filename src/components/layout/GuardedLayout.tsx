@@ -54,7 +54,7 @@ export default function GuardedLayout({
       href: "/database", 
       active: false,
       children: [
-        { name: "Koneksi", href: "/database/connections", active: false },
+        // { name: "Koneksi", href: "/database/connections", active: false },
         { name: "Konfigurasi", href: "/database/configuration", active: false },
       ]
     },

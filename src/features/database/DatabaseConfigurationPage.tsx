@@ -21,7 +21,6 @@ import {
   AlertDialogOverlay,
 } from "@/components/ui/alert-dialog";
 import { DatabaseInputUrl } from "./components/DatabaseInputUrl";
-import { DatabaseCreateNew } from "./components/create/DatabaseCreateNew";
 
 export default function DatabaseConfigurationPage() {
   const [selectedTables, setSelectedTables] = useState<string[]>([]);
@@ -74,6 +73,8 @@ export default function DatabaseConfigurationPage() {
             atau modifikasi data. Ekspor dalam jumlah besar dapat mempengaruhi
             performa sistem dan keamanan data."
         />
+
+        <DatabaseInputUrl />
 
         <DatabaseStatsData />
 
