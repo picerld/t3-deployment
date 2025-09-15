@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+import { Menu, ChevronDown, ChevronRight } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import { ModeToggle } from "../ui/mode-toggle";
 import Link from "next/link";
@@ -14,10 +14,11 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "../ui/sheet";
-import React from "react";
+import React, { useState } from "react";
 import { skipToken } from "@tanstack/react-query";
 import GlobalSearch from "./GlobalSearch";
 import { LogoutButton } from "./LogoutButton";
+import NavItemComponent, { type INavItem } from "./NavItemComponent";
 
 export default function GuardedLayout({
   children,
@@ -26,6 +27,8 @@ export default function GuardedLayout({
 }) {
   const pathName = usePathname();
   const router = useRouter();
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [mobileExpandedItems, setMobileExpandedItems] = useState<Set<string>>(new Set());
 
   const token = Cookies.get("auth.token");
 
@@ -38,7 +41,7 @@ export default function GuardedLayout({
     },
   );
 
-  const navItem = [
+  const navItem: INavItem[] = [
     { name: "Dashboard", href: "/dashboard", active: false },
     { name: "Statistik", href: "/statistik", active: false },
     { name: "Dokumen", href: "/documents", active: false },
@@ -46,11 +49,24 @@ export default function GuardedLayout({
     { name: "Kategori", href: "/categories", active: false },
     { name: "Lokasi", href: "/locations", active: false },
     { name: "Akun", href: "/users", active: false },
+    { 
+      name: "Database", 
+      href: "/database", 
+      active: false,
+      children: [
+        { name: "Koneksi", href: "/database/connections", active: false },
+        { name: "Konfigurasi", href: "/database/configuration", active: false },
+      ]
+    },
   ];
 
   const updatedNavItem = navItem.map((item) => ({
     ...item,
     active: pathName === item.href || pathName.includes(item.href),
+    children: item.children?.map((child: INavItem) => ({
+      ...child,
+      active: pathName === child.href || pathName.includes(child.href),
+    })),
   }));
 
   const group1 = updatedNavItem.filter((item) =>
@@ -60,6 +76,34 @@ export default function GuardedLayout({
   const group2 = updatedNavItem.filter((item) =>
     ["Barang", "Dashboard", "Statistik", "Dokumen"].includes(item.name),
   );
+
+  const group3 = updatedNavItem.filter((item) =>
+    ["Database"].includes(item.name),
+  );
+
+  const toggleExpanded = (itemName: string) => {
+    setExpandedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemName)) {
+        newSet.delete(itemName);
+      } else {
+        newSet.add(itemName);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleMobileExpanded = (itemName: string) => {
+    setMobileExpandedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemName)) {
+        newSet.delete(itemName);
+      } else {
+        newSet.add(itemName);
+      }
+      return newSet;
+    });
+  };
 
   const logoutMutation = trpc.auth.logout.useMutation({
     onSuccess() {
@@ -107,17 +151,13 @@ export default function GuardedLayout({
                       Menu
                     </div>
                     {group2.map((item) => (
-                      <Link key={item.name} href={item.href} className="group">
-                        <div
-                          className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
-                            item.active
-                              ? "bg-main group-hover:bg-main font-semibold"
-                              : "group-hover:bg-main/70"
-                          }`}
-                        >
-                          {item.name}
-                        </div>
-                      </Link>
+                      <NavItemComponent
+                        key={item.name}
+                        item={item}
+                        isMobile={true}
+                        expandedItems={mobileExpandedItems}
+                        toggleExpanded={toggleMobileExpanded}
+                      />
                     ))}
 
                     <div className="bg-background dark:bg-secondary-background flex items-center border-b-4 border-black py-3 pl-5 text-lg font-semibold">
@@ -125,17 +165,27 @@ export default function GuardedLayout({
                     </div>
 
                     {group1.map((item) => (
-                      <Link key={item.name} href={item.href} className="group">
-                        <div
-                          className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
-                            item.active
-                              ? "bg-main group-hover:bg-main font-semibold"
-                              : "group-hover:bg-main/70"
-                          }`}
-                        >
-                          {item.name}
-                        </div>
-                      </Link>
+                      <NavItemComponent
+                        key={item.name}
+                        item={item}
+                        isMobile={true}
+                        expandedItems={mobileExpandedItems}
+                        toggleExpanded={toggleMobileExpanded}
+                      />
+                    ))}
+
+                    <div className="bg-background dark:bg-secondary-background flex items-center border-b-4 border-black py-3 pl-5 text-lg font-semibold">
+                      Setting
+                    </div>
+
+                    {group3.map((item) => (
+                      <NavItemComponent
+                        key={item.name}
+                        item={item}
+                        isMobile={true}
+                        expandedItems={mobileExpandedItems}
+                        toggleExpanded={toggleMobileExpanded}
+                      />
                     ))}
                   </nav>
                   <SheetFooter>
@@ -175,17 +225,12 @@ export default function GuardedLayout({
               Menu
             </div>
             {group2.map((item) => (
-              <Link key={item.name} href={item.href} className="group">
-                <div
-                  className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
-                    item.active
-                      ? "bg-main group-hover:bg-main font-semibold"
-                      : "group-hover:bg-main/70"
-                  }`}
-                >
-                  {item.name}
-                </div>
-              </Link>
+              <NavItemComponent
+                key={item.name}
+                item={item}
+                expandedItems={expandedItems}
+                toggleExpanded={toggleExpanded}
+              />
             ))}
 
             <div className="bg-background dark:bg-secondary-background flex items-center border-b-4 border-black py-3 pl-5 text-lg font-semibold">
@@ -193,17 +238,25 @@ export default function GuardedLayout({
             </div>
 
             {group1.map((item) => (
-              <Link key={item.name} href={item.href} className="group">
-                <div
-                  className={`flex items-center border-b-4 border-black py-4 pl-5 text-lg ${
-                    item.active
-                      ? "bg-main group-hover:bg-main font-semibold"
-                      : "group-hover:bg-main/70"
-                  }`}
-                >
-                  {item.name}
-                </div>
-              </Link>
+              <NavItemComponent
+                key={item.name}
+                item={item}
+                expandedItems={expandedItems}
+                toggleExpanded={toggleExpanded}
+              />
+            ))}
+
+            <div className="bg-background dark:bg-secondary-background flex items-center border-b-4 border-black py-3 pl-5 text-lg font-semibold">
+              Setting
+            </div>
+
+            {group3.map((item) => (
+              <NavItemComponent
+                key={item.name}
+                item={item}
+                expandedItems={expandedItems}
+                toggleExpanded={toggleExpanded}
+              />
             ))}
 
             <div className="mt-auto mb-20 w-full border-t-4 border-black pt-3 pl-5 text-lg">
